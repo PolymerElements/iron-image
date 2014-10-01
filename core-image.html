@@ -25,7 +25,7 @@ image/color to be faded out once the image is rendered.
 
 Examples:
 
-  Basically identical to <img src="..."> tag:
+  Basically identical to &lt;img src="..."&gt; tag:
 
     <core-image src="http://lorempixel.com/400/400"></core-image>
 
@@ -184,7 +184,7 @@ Examples:
         } else {
           this._setSrc(this.placeholder);
         }
-        if (this.src) {
+        if (this.load && this.src) {
           var img = new Image();
           img.src = this.src;
           this.loading = true;
@@ -203,9 +203,9 @@ Examples:
 
     _setSrc: function(src) {
       if (this.sizing) {
-        this.style.backgroundImage = (this.load && src) ? 'url(' + src + ')': null;
+        this.style.backgroundImage = src ? 'url(' + src + ')': null;
       } else {
-        this.$.img.src = (this.load && src) || '';
+        this.$.img.src = src || '';
       }
     }
 
