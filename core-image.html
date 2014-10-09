@@ -203,7 +203,7 @@ Examples:
 
     _setSrc: function(src) {
       if (this.sizing) {
-        this.style.backgroundImage = src ? 'url(' + src + ')': null;
+        this.style.backgroundImage = src ? 'url(' + src + ')': '';
       } else {
         this.$.img.src = src || '';
       }
