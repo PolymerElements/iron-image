@@ -159,12 +159,40 @@ Examples:
        * @type boolean
        * @default false
        */
-      loading: false
+      loading: false,
+
+      /**
+       * Can be used to set the width of image (e.g. via binding); size may also be
+       * set via CSS.
+       *
+       * @attribute width
+       * @type number
+       * @default null
+       */
+      width: null,
+
+      /**
+       * Can be used to set the height of image (e.g. via binding); size may also be
+       * set via CSS.
+       *
+       * @attribute height
+       * @type number
+       * @default null
+       */
+      height: null
 
     },
 
     observe: {
       'preload color sizing position src fade': 'update'
+    },
+
+    widthChanged: function() {
+      this.style.width = isNaN(this.width) ? this.width : this.width + 'px';
+    },
+
+    heightChanged: function() {
+      this.style.height = isNaN(this.height) ? this.height : this.height + 'px';
     },
 
     update: function() {
