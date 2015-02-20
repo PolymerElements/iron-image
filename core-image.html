@@ -61,43 +61,60 @@ Examples:
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../layout/layout.html">
+<dom-module id="core-image">
+  <style>
+    core-image {
+      display: inline-block;
+      overflow: hidden;
+      position: relative;
+    }
 
-<polymer-element name="core-image">
-<template>
-  <link rel="stylesheet" href="core-image.css">
-  <template if="{{!sizing}}">
-    <img id="img">
+    core-image[sizing] #img {
+      display: none;
+    }
+
+    core-image #placeholder {
+      background-color: inherit;
+      opacity: 1;
+    }
+
+    core-image #placeholder.faded-out {
+      transition: opacity 0.5s linear;
+      opacity: 0;
+    }
+  </style>
+  <template>
+    <img id="img" role="none" class$="[[imageClassName]]">
+    <div id="placeholder" class$="[[placeholderClassName]]"></div>
+    <content></content>
   </template>
-  <template if="{{preload && fade}}">
-    <div id="placeholder" fit></div>
-  </template>
-  <content></content>
-</template>
+</dom-module>
 <script>
-
   Polymer({
-    
-    publish: {
 
+    is: 'core-image',
+
+    published: {
       /**
        * The URL of an image.
        *
        * @attribute src
        * @type string
-       * @default null
+       * @default ''
        */
-      src: null,
+      src: String,
 
       /**
-       * When false, the image is prevented from loading and any placeholder is
+       * When true, the image is prevented from loading and any placeholder is
        * shown.  This may be useful when a binding to the src property is known to
        * be invalid, to prevent 404 requests.
        *
-       * @attribute load
+       * @attribute preventLoad
        * @type boolean
-       * @default true
+       * @default false
        */
-      load: true,
+      preventLoad: Boolean,
 
       /**
        * Sets a sizing option for the image.  Valid values are `contain` (full 
@@ -109,7 +126,7 @@ Examples:
        * @type string
        * @default null
        */
-      sizing: null,
+      sizing: String,
 
       /**
        * When a sizing option is uzed (`cover` or `contain`), this determines
@@ -119,7 +136,7 @@ Examples:
        * @type string
        * @default 'center'
        */
-      position: 'center',
+      position: String,
 
       /**
        * When `true`, any change to the `src` property will cause the `placeholder`
@@ -129,7 +146,8 @@ Examples:
        * @type boolean
        * @default false
        */
-      preload: false,
+      preload: Boolean,
+
 
       /**
        * This image will be used as a background/placeholder until the src image has
@@ -139,7 +157,7 @@ Examples:
        * @type string
        * @default null
        */
-      placeholder: null,
+      placeholder: String,
 
       /**
        * When `preload` is true, setting `fade` to true will cause the image to
@@ -149,7 +167,19 @@ Examples:
        * @type boolean
        * @default false
        */
-      fade: false,
+      fade: Boolean,
+
+      /**
+       * Read-only value that is true when the image is loaded.
+       *
+       * @attribute preloaded
+       * @type boolean
+       * @default false
+       */
+      loaded: {
+        type: Boolean,
+        notify: true
+      },
 
       /**
        * Read-only value that tracks the loading state of the image when the `preload`
@@ -159,7 +189,10 @@ Examples:
        * @type boolean
        * @default false
        */
-      loading: false,
+      loading: {
+        type: Boolean,
+        notify: true
+      },
 
       /**
        * Can be used to set the width of image (e.g. via binding); size may also be
@@ -169,7 +202,7 @@ Examples:
        * @type number
        * @default null
        */
-      width: null,
+      width: Number,
 
       /**
        * Can be used to set the height of image (e.g. via binding); size may also be
@@ -179,12 +212,94 @@ Examples:
        * @type number
        * @default null
        */
-      height: null
-
+      height: Number
     },
 
-    observe: {
-      'preload color sizing position src fade': 'update'
+    configure: function() {
+      return {
+        src: '',
+        preventLoad: false,
+        preload: false,
+        loading: false,
+        loaded: false,
+        placeholder: null,
+        fade: false,
+        sizing: null,
+        position: 'center',
+        width: null,
+        height: null,
+      };
+    },
+
+    bind: {
+      width: 'widthChanged',
+      height: 'heightChanged',
+      src: 'srcChanged',
+      placeholderBackgroundUrl: 'placeholderBackgroundUrlChanged'
+    },
+
+    computed: {
+      imageClassName: 'computeImageClassName(sizing)',
+      placeholderClassName: 'computePlaceholderClassName(fade,loaded,preload)',
+      placeholderBackgroundUrl: 'computePlaceholderBackgroundUrl(preload,placeholder)',
+      requiresPreload: 'computeRequiresPreload(preload,loaded)',
+      canLoad: 'computeCanLoad(preventLoad,src)',
+
+      // TODO(cdata): Change this to a bind when we can declare multiple
+      // bind dependencies in 0.8
+      _observe1: 'transformChanged(sizing,position)',
+      _observe2: 'loadBehaviorChanged(canLoad,preload,loaded)',
+      _observe3: 'loadStateChanged(src,preload,loaded)',
+    },
+
+    ready: function() {
+      if (!this.hasAttribute('role')) {
+        this.setAttribute('role', 'img');
+      }
+    },
+
+    computeImageClassName: function() {
+      if (this.sizing) {
+        return 'hidden';
+      }
+
+      return '';
+    },
+
+    computePlaceholderClassName: function() {
+      var className
+        
+      if (!this.preload) {
+        return 'hidden';
+      }
+
+      className = 'fit';
+
+      if (this.loaded) {
+        if (this.fade) {
+          className += ' faded-out';
+        } else {
+          className += ' hidden';
+        }
+      }
+
+      return className;
+    },
+
+    computePlaceholderBackgroundUrl: function() {
+      if (this.preload && this.placeholder) {
+        return 'url(' + this.placeholder + ')';
+      }
+
+      return null;
+    },
+
+    computeRequiresPreload: function() {
+      return this.preload && !this.loaded;
+    },
+
+    computeCanLoad: function() {
+      return Boolean(!this.preventLoad && this.src);
     },
 
     widthChanged: function() {
@@ -195,49 +310,65 @@ Examples:
       this.style.height = isNaN(this.height) ? this.height : this.height + 'px';
     },
 
-    update: function() {
-      this.style.backgroundSize = this.sizing;
-      this.style.backgroundPosition = this.sizing ? this.position : null;
-      this.style.backgroundRepeat = this.sizing ? 'no-repeat' : null;
-      if (this.preload) {
-        if (this.fade) {
-          if (!this._placeholderEl) {
-            this._placeholderEl = this.shadowRoot.querySelector('#placeholder');
-          }
-          this._placeholderEl.style.backgroundSize = this.sizing;
-          this._placeholderEl.style.backgroundPosition = this.sizing ? this.position : null;
-          this._placeholderEl.style.backgroundRepeat = this.sizing ? 'no-repeat' : null;
-          this._placeholderEl.classList.remove('fadein');
-          this._placeholderEl.style.backgroundImage = (this.load && this.placeholder) ? 'url(' + this.placeholder + ')': null;
-        } else {
-          this._setSrc(this.placeholder);
-        }
-        if (this.load && this.src) {
-          var img = new Image();
-          img.src = this.src;
-          this.loading = true;
-          img.onload = function() {
-            this._setSrc(this.src);
-            this.loading = false;
-            if (this.fade) {
-              this._placeholderEl.classList.add('fadein');
-            }
-          }.bind(this);
-        }
-      } else {
-        this._setSrc(this.src);
+    srcChanged: function(newSrc, oldSrc) {
+      if (newSrc !== oldSrc) {
+        this.loaded = false;
       }
     },
 
-    _setSrc: function(src) {
-      if (this.sizing) {
-        this.style.backgroundImage = src ? 'url(' + src + ')': '';
+    placeholderBackgroundUrlChanged: function() {
+      this.$.placeholder.style.backgroundImage =
+        this.placeholderBackgroundUrl;
+    },
+
+    transformChanged: function() {
+      var placeholderStyle = this.$.placeholder.style;
+
+      this.style.backgroundSize =
+        placeholderStyle.backgroundSize = this.sizing;
+
+      this.style.backgroundPosition =
+        placeholderStyle.backgroundPosition =
+        this.sizing ? this.position : null;
+
+      this.style.backgroundRepeat =
+        placeholderStyle.backgroundRepeat =
+        this.sizing ? 'no-repeat' : null;
+    },
+
+    loadBehaviorChanged: function() {
+      var img;
+      
+      if (!this.canLoad) {
+        return;
+      }
+
+      if (this.requiresPreload) {
+        img = new Image();
+        img.src = this.src;
+
+        this.loading = true;
+
+        img.onload = function() {
+          this.loading = false;
+          this.loaded = true;
+        }.bind(this);
       } else {
-        this.$.img.src = src || '';
+        this.loaded = true;
+      }
+    },
+
+    loadStateChanged: function() {
+      if (this.requiresPreload) {
+        return;
+      }
+
+      if (this.sizing) {
+        this.style.backgroundImage = this.src ? 'url(' + this.src + ')': '';
+      } else {
+        this.$.img.src = this.src || '';
       }
     }
-
   });
-
 </script>
-</polymer-element>
+
