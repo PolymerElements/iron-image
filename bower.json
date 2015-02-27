@@ -2,6 +2,11 @@
   "name": "core-image",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#master"
+    "polymer": "Polymer/polymer#0.8-preview",
+    "layout": "polymer/layout"
+  },
+  "devDependencies": {
+    "web-component-tester": "~2.2.3",
+    "test-fixture": "polymer/test-fixture#~0.1.0"
   }
 }
