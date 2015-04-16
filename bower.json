@@ -1,12 +1,14 @@
 {
-  "name": "core-image",
+  "name": "iron-image",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#0.8-preview",
-    "layout": "polymer/layout"
+    "polymer": "Polymer/polymer#v0.8.0-rc.4",
+    "layout": "polymerelements/paper-styles#^0.8.0"
   },
   "devDependencies": {
-    "web-component-tester": "~2.2.3",
-    "test-fixture": "polymer/test-fixture#~0.1.0"
+    "iron-doc-viewer": "polymerelements/iron-doc-viewer#^0.8.0",
+    "test-fixture": "polymerelements/test-fixture#^0.8.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.6.0",
+    "web-component-tester": "~2.2.3"
   }
 }
