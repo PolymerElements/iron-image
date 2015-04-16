@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -9,24 +9,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <html>
   <head>
-    <title>core-image</title>
+    <title>iron-image</title>
 
-    <script src="../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <script src="../../test-fixture/test-fixture-mocha.js"></script>
 
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../test-fixture/test-fixture.html">
-    <link rel="import" href="../core-image.html">
+    <link rel="import" href="../iron-image.html">
   </head>
   <body>
     <test-fixture id="TrivialImage">
       <template>
-        <core-image></core-image>
+        <iron-image></iron-image>
       </template>
     </test-fixture>
     <script>
-      suite('<core-image>', function() {
+      suite('<iron-image>', function() {
         function randomImageUrl () {
           return '../demo/polymer.svg?' + Math.random();
         }
@@ -39,7 +39,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
 
           test('can load images given a src', function(done) {
-            image.addEventListener('loaded-changed', function() {
+            image.addEventListener('loaded-changed', function onLoadedChanged() {
+              image.removeEventListener('loaded-changed', onLoadedChanged);
+
               try {
                 expect(image.loaded).to.be.eql(true);
                 done();
@@ -53,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           test('will reload images when src changes', function(done) {
             var loadCount = 0;
 
-            image.addEventListener('loaded-changed', function() {
+            image.addEventListener('loaded-changed', function onLoadedChanged() {
               if (image.loaded === true) {
                 loadCount++;
 
@@ -61,6 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   done();
                 } else {
                   image.src = randomImageUrl();
+                  image.removeEventListener('loaded-changed', onLoadedChanged);
                 }
               }
             });
