@@ -269,27 +269,11 @@ Examples:
 
     },
 
-    configure: function() {
-      return {
-        src: '',
-        preventLoad: false,
-        preload: false,
-        loading: false,
-        loaded: false,
-        placeholder: null,
-        fade: false,
-        sizing: null,
-        position: 'center',
-        width: null,
-        height: null,
-      };
-    },
-
-    observers: {
-      'sizing position': 'transformChanged',
-      'canLoad preload loaded': 'loadBehaviorChanged',
-      'src preload loaded': 'loadStateChanged',
-    },
+    observers: [
+      'transformChanged(sizing, position)',
+      'loadBehaviorChanged(canLoad, preload, loaded)',
+      'loadStateChanged(src, preload, loaded)',
+    ],
 
     ready: function() {
       if (!this.hasAttribute('role')) {
