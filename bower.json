@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#v0.8.0-rc.6",
-    "layout": "polymerelements/paper-styles#^0.8.0"
+    "paper-styles": "polymerelements/paper-styles#^0.8.0"
   },
   "devDependencies": {
     "iron-doc-viewer": "polymerelements/iron-doc-viewer#^0.8.0",
