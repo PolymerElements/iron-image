@@ -2,7 +2,7 @@
   "name": "iron-image",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#v0.8.0-rc.6",
+    "polymer": "Polymer/polymer#v0.8.0-rc.7",
     "paper-styles": "polymerelements/paper-styles#^0.8.0"
   },
   "devDependencies": {
