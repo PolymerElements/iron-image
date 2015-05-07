@@ -44,7 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </head>
   <body>
-    <template is="x-autobind">
+    <template is="dom-bind">
       <h3>Sizing: none (naturally sized)</h3>
       <iron-image src="./polymer.svg"></iron-image>
 
@@ -171,7 +171,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
 
     <script>
-      var scope = document.querySelector('template[is=x-autobind]');
+      var scope = document.querySelector('template[is=dom-bind]');
 
       scope.preload = function(e) {
         var img = document.querySelector('#' + e.target.getAttribute('target'));
