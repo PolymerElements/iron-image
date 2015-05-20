@@ -256,15 +256,18 @@ Examples:
       },
 
       _placeholderBackgroundUrl: {
+        type: String,
         computed: '_computePlaceholderBackgroundUrl(preload,placeholder)',
         observer: '_placeholderBackgroundUrlChanged'
       },
 
       requiresPreload: {
+        type: Boolean,
         computed: '_computeRequiresPreload(preload,loaded)'
       },
 
       canLoad: {
+        type: Boolean,
         computed: '_computeCanLoad(preventLoad, src)'
       }
 
