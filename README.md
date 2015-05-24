@@ -18,31 +18,43 @@ image/color to be faded out once the image is rendered.
 
 Examples:
 
-  Basically identical to &lt;img src="..."&gt; tag:
+Basically identical to `<img src="...">` tag:
 
-    <iron-image src="http://lorempixel.com/400/400"></iron-image>
+```html
+<iron-image src="http://lorempixel.com/400/400"></iron-image>
+```
 
-  Will letterbox the image to fit:
+Will letterbox the image to fit:
 
-    <iron-image style="width:400px; height:400px;" sizing="contain"
-      src="http://lorempixel.com/600/400"></iron-image>
+```html
+<iron-image style="width:400px; height:400px;" sizing="contain"
+  src="http://lorempixel.com/600/400"></iron-image>
+```
 
-  Will crop the image to fit:
+Will crop the image to fit:
 
-    <iron-image style="width:400px; height:400px;" sizing="cover"
-      src="http://lorempixel.com/600/400"></iron-image>
+```html
+<iron-image style="width:400px; height:400px;" sizing="cover"
+  src="http://lorempixel.com/600/400"></iron-image>
+```
 
-  Will show light-gray background until the image loads:
+Will show light-gray background until the image loads:
 
-    <iron-image style="width:400px; height:400px; background-color: lightgray;"
-      sizing="cover" preload src="http://lorempixel.com/600/400"></iron-image>
+```html
+<iron-image style="width:400px; height:400px; background-color: lightgray;"
+  sizing="cover" preload src="http://lorempixel.com/600/400"></iron-image>
+```
 
-  Will show a base-64 encoded placeholder image until the image loads:
+Will show a base-64 encoded placeholder image until the image loads:
 
-    <iron-image style="width:400px; height:400px;" placeholder="data:image/gif;base64,..."
-      sizing="cover" preload src="http://lorempixel.com/600/400"></iron-image>
+```html
+<iron-image style="width:400px; height:400px;" placeholder="data:image/gif;base64,..."
+  sizing="cover" preload src="http://lorempixel.com/600/400"></iron-image>
+```
 
-  Will fade the light-gray background out once the image is loaded:
+Will fade the light-gray background out once the image is loaded:
 
-    <iron-image style="width:400px; height:400px; background-color: lightgray;"
-      sizing="cover" preload fade src="http://lorempixel.com/600/400"></iron-image>
+```html
+<iron-image style="width:400px; height:400px; background-color: lightgray;"
+  sizing="cover" preload fade src="http://lorempixel.com/600/400"></iron-image>
+```
