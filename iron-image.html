@@ -74,8 +74,30 @@ Examples:
       position: relative;
     }
 
+    :host([sizing=fit-width]) {
+      width: 100%;
+    }
+
+    :host([sizing=fit-height]) {
+      height: 100%;
+    }
+
+    #img {
+      display: block;
+    }
+
     :host([sizing]) #img {
       display: none;
+    }
+
+    :host([sizing=fit-width]) #img {
+      display: block;
+      width: 100%;
+    }
+
+    :host([sizing=fit-height]) #img {
+      display: block;
+      height: 100%;
     }
 
     #placeholder {
@@ -92,8 +114,8 @@ Examples:
 
   <template>
 
-    <img id="img" role="none" hidden$="[[_computeImageVisibility(sizing)]]">
-    <div id="placeholder" hidden$="[[_computePlaceholderVisibility(fade,loaded,preload)]]" class$="[[_computePlaceholderClassName(fade,loaded,preload)]]"></div>
+    <img id="img" role="none" hidden$="[[_computeImageHidden(sizing)]]">
+    <div id="placeholder" hidden$="[[_computePlaceholderHidden(fade,loaded,preload)]]" class$="[[_computePlaceholderClassName(fade,loaded,preload)]]"></div>
     <content></content>
 
   </template>
@@ -246,11 +268,15 @@ Examples:
       }
     },
 
-    _computeImageVisibility: function() {
-      return !!this.sizing;
+    _hasFittedSizing: function() {
+      return ['fit-width', 'fit-height'].indexOf(this.sizing) >= 0;
     },
 
-    _computePlaceholderVisibility: function() {
+    _computeImageHidden: function() {
+      return !!this.sizing && !this._hasFittedSizing();
+    },
+
+    _computePlaceholderHidden: function() {
       return !this.preload || (this.loaded && !this.fade);
     },
 
@@ -304,16 +330,19 @@ Examples:
     _transformChanged: function() {
       var placeholderStyle = this.$.placeholder.style;
 
+      var hasFittedSizing = this._hasFittedSizing();
+
       this.style.backgroundSize =
-        placeholderStyle.backgroundSize = this.sizing;
+      placeholderStyle.backgroundSize =
+        hasFittedSizing ? '' : this.sizing;
 
       this.style.backgroundPosition =
         placeholderStyle.backgroundPosition =
-        this.sizing ? this.position : '';
+        !hasFittedSizing ? this.position : '';
 
       this.style.backgroundRepeat =
         placeholderStyle.backgroundRepeat =
-        this.sizing ? 'no-repeat' : '';
+        !hasFittedSizing ? 'no-repeat' : '';
     },
 
     _loadBehaviorChanged: function() {
@@ -343,7 +372,7 @@ Examples:
         return;
       }
 
-      if (this.sizing) {
+      if (this.sizing && !this._hasFittedSizing()) {
         this.style.backgroundImage = this.src ? 'url(' + this.src + ')': '';
       } else {
         this.$.img.src = this.src || '';
