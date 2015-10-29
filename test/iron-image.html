@@ -72,6 +72,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             image.src = randomImageUrl();
           });
         });
+
+        suite('custom sizing types', function() {
+          var image;
+          var container;
+
+          setup(function() {
+            image = fixture('TrivialImage');
+            image.src = randomImageUrl();
+
+            container = document.createElement('div');
+            document.body.appendChild(container);
+            container.appendChild(image);
+          });
+
+          teardown(function() {
+            document.body.removeChild(container);
+          });
+
+          test('fit-width', function() {
+            container.style.width = '200px';
+            image.setAttribute('sizing', 'fit-width');
+
+            var hostBoundingRect = image.getBoundingClientRect();
+            expect(hostBoundingRect.width).to.equal(200);
+
+            var imgBoundingRect = image.$.img.getBoundingClientRect();
+            expect(imgBoundingRect.width).to.equal(200);
+          });
+
+          test('fit-height', function() {
+            container.style.height = '350px';
+            image.setAttribute('sizing', 'fit-height');
+
+            var hostBoundingRect = image.getBoundingClientRect();
+            expect(hostBoundingRect.height).to.equal(350);
+
+            var imgBoundingRect = image.$.img.getBoundingClientRect();
+            expect(imgBoundingRect.height).to.equal(350);
+          });
+        });
       });
     </script>
   </body>
