@@ -241,8 +241,8 @@ Custom property | Description | Default
 
     observers: [
       '_transformChanged(sizing, position)',
-      '_loadBehaviorChanged(canLoad, preload, loaded)',
-      '_loadStateChanged(src, preload, loaded)',
+      '_loadBehaviorChanged(canLoad, preload, loaded, src)',
+      '_loadStateChanged(src, preload, loaded)'
     ],
 
     ready: function() {
@@ -298,6 +298,9 @@ Custom property | Description | Default
     _srcChanged: function(newSrc, oldSrc) {
       if (newSrc !== oldSrc) {
         this.loaded = false;
+        if (this.requiresPreload) {
+          this.style.backgroundImage = null;
+        }
       }
     },
 
@@ -322,22 +325,24 @@ Custom property | Description | Default
     },
 
     _loadBehaviorChanged: function() {
-      var img;
-
       if (!this.canLoad) {
         return;
       }
 
       if (this.requiresPreload) {
-        img = new Image();
-        img.src = this.src;
-
+        if (!this._preLoadImage) {
+          // Using a single Image instance to pre-load images ensures that
+          // onLoad callback will be called only once in the event of image
+          // source changes before last image was fully loaded.
+          this._preLoadImage = new Image();
+          this._preLoadImage.onload = function() {
+            this.loading = false;
+            this.loaded = true;
+            this._preLoadImage = null;
+          }.bind(this);
+        }
+        this._preLoadImage.src = this.src;
         this.loading = true;
-
-        img.onload = function() {
-          this.loading = false;
-          this.loaded = true;
-        }.bind(this);
       } else {
         this.loaded = true;
       }
