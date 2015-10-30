@@ -61,6 +61,8 @@ Examples:
 Custom property | Description | Default
 ----------------|-------------|----------
 `--iron-image-placeholder` | Mixin applied to #placeholder | `{}`
+`--iron-image-width` | Sets the width of the wrapped image | `auto`
+`--iron-image-height` | Sets the height of the wrapped image | `auto`
 
 @group Iron Elements
 @element iron-image
@@ -75,6 +77,12 @@ Custom property | Description | Default
       display: inline-block;
       overflow: hidden;
       position: relative;
+    }
+
+    #img {
+      display: block;
+      width: var(--iron-image-width, auto);
+      height: var(--iron-image-height, auto);
     }
 
     :host([sizing]) #img {
