@@ -19,6 +19,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../test-fixture/test-fixture.html">
     <link rel="import" href="../iron-image.html">
+
+    <style is="custom-style">
+      #fixed-width-container {
+        width: 500px;
+      }
+
+      #fixed-width-container iron-image {
+        width: 100%;
+        --iron-image-width: 100%;
+      }
+
+      #fixed-height-container {
+        height: 500px;
+      }
+
+      #fixed-height-container iron-image {
+        height: 100%;
+        --iron-image-height: 100%;
+      }
+    </style>
   </head>
   <body>
     <test-fixture id="TrivialImage">
@@ -26,6 +46,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-image></iron-image>
       </template>
     </test-fixture>
+
+    <div id="fixed-width-container"></div>
+    <div id="fixed-height-container"></div>
+
     <script>
       suite('<iron-image>', function() {
         function randomImageUrl () {
@@ -67,6 +91,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   image.removeEventListener('loaded-changed', onLoadedChanged);
                 }
               }
+            });
+
+            image.src = randomImageUrl();
+          });
+        });
+
+        suite('--iron-image-width, --iron-image-height', function() {
+          var image;
+          var fixedWidthContainer;
+
+          setup(function() {
+            image = fixture('TrivialImage');
+
+            fixedWidthContainer = document.getElementById('fixed-width-container');
+            fixedHeightContainer = document.getElementById('fixed-height-container');
+          });
+
+          test('100% width image fills container', function(done) {
+            fixedWidthContainer.appendChild(image);
+
+            image.$.img.addEventListener('load', function onLoadedChanged(e) {
+              image.$.img.removeEventListener('load', onLoadedChanged);
+              Polymer.updateStyles();
+
+              var containerRect = fixedWidthContainer.getBoundingClientRect();
+              var ironImageRect = image.getBoundingClientRect();
+              var wrappedImageRect = image.$.img.getBoundingClientRect();
+
+              expect(containerRect.width).to.equal(500);
+              expect(ironImageRect.width).to.equal(500);
+              expect(wrappedImageRect.width).to.equal(500);
+
+              fixedWidthContainer.removeChild(image);
+              done();
+            });
+
+            image.src = randomImageUrl();
+          });
+
+          test('100% height image fills container', function(done) {
+            fixedHeightContainer.appendChild(image);
+
+            image.$.img.addEventListener('load', function onLoadedChanged(e) {
+              image.$.img.removeEventListener('load', onLoadedChanged);
+              Polymer.updateStyles();
+
+              var containerRect = fixedHeightContainer.getBoundingClientRect();
+              var ironImageRect = image.getBoundingClientRect();
+              var wrappedImageRect = image.$.img.getBoundingClientRect();
+
+              expect(containerRect.height).to.equal(500);
+              expect(ironImageRect.height).to.equal(500);
+              expect(wrappedImageRect.height).to.equal(500);
+
+              fixedHeightContainer.removeChild(image);
+              done();
             });
 
             image.src = randomImageUrl();
