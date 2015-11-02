@@ -21,20 +21,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../iron-image.html">
 
     <style is="custom-style">
-      #fixed-width-container {
+      .fixed-width-container {
         width: 500px;
       }
 
-      #fixed-width-container iron-image {
+      .fixed-width-container iron-image {
         width: 100%;
         --iron-image-width: 100%;
       }
 
-      #fixed-height-container {
+      .fixed-height-container {
         height: 500px;
       }
 
-      #fixed-height-container iron-image {
+      .fixed-height-container iron-image {
         height: 100%;
         --iron-image-height: 100%;
       }
@@ -47,8 +47,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </test-fixture>
 
-    <div id="fixed-width-container"></div>
-    <div id="fixed-height-container"></div>
+    <test-fixture id="FixedWidthContainer">
+      <template>
+        <div class="fixed-width-container"></div>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="FixedHeightContainer">
+      <template>
+        <div class="fixed-height-container"></div>
+      </template>
+    </test-fixture>
 
     <script>
       suite('<iron-image>', function() {
@@ -100,12 +109,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('--iron-image-width, --iron-image-height', function() {
           var image;
           var fixedWidthContainer;
+          var fixedHeightContainer;
 
           setup(function() {
             image = fixture('TrivialImage');
-
-            fixedWidthContainer = document.getElementById('fixed-width-container');
-            fixedHeightContainer = document.getElementById('fixed-height-container');
+            fixedWidthContainer = fixture('FixedWidthContainer');
+            fixedHeightContainer = fixture('FixedHeightContainer');
           });
 
           test('100% width image fills container', function(done) {
