@@ -49,13 +49,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <test-fixture id="FixedWidthContainer">
       <template>
-        <div class="fixed-width-container"></div>
+        <div class="fixed-width-container">
+          <iron-image></iron-image>
+        </div>
       </template>
     </test-fixture>
 
     <test-fixture id="FixedHeightContainer">
       <template>
-        <div class="fixed-height-container"></div>
+        <div class="fixed-height-container">
+          <iron-image></iron-image>
+        </div>
       </template>
     </test-fixture>
 
@@ -107,58 +111,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         suite('--iron-image-width, --iron-image-height', function() {
-          var image;
           var fixedWidthContainer;
+          var fixedWidthIronImage;
           var fixedHeightContainer;
+          var fixedHeightIronImage;
 
           setup(function() {
-            image = fixture('TrivialImage');
             fixedWidthContainer = fixture('FixedWidthContainer');
+            fixedWidthIronImage = fixedWidthContainer.querySelector('iron-image');
             fixedHeightContainer = fixture('FixedHeightContainer');
+            fixedHeightIronImage = fixedHeightContainer.querySelector('iron-image');
           });
 
           test('100% width image fills container', function(done) {
-            fixedWidthContainer.appendChild(image);
-
-            image.$.img.addEventListener('load', function onLoadedChanged(e) {
-              image.$.img.removeEventListener('load', onLoadedChanged);
+            fixedWidthIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
+              fixedWidthIronImage.$.img.removeEventListener('load', onLoadedChanged);
               Polymer.updateStyles();
 
               var containerRect = fixedWidthContainer.getBoundingClientRect();
-              var ironImageRect = image.getBoundingClientRect();
-              var wrappedImageRect = image.$.img.getBoundingClientRect();
+              var ironImageRect = fixedWidthIronImage.getBoundingClientRect();
+              var wrappedImageRect = fixedWidthIronImage.$.img.getBoundingClientRect();
 
               expect(containerRect.width).to.equal(500);
               expect(ironImageRect.width).to.equal(500);
               expect(wrappedImageRect.width).to.equal(500);
 
-              fixedWidthContainer.removeChild(image);
               done();
             });
 
-            image.src = randomImageUrl();
+            fixedWidthIronImage.src = randomImageUrl();
           });
 
           test('100% height image fills container', function(done) {
-            fixedHeightContainer.appendChild(image);
-
-            image.$.img.addEventListener('load', function onLoadedChanged(e) {
-              image.$.img.removeEventListener('load', onLoadedChanged);
+            fixedHeightIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
+              fixedHeightIronImage.$.img.removeEventListener('load', onLoadedChanged);
               Polymer.updateStyles();
 
               var containerRect = fixedHeightContainer.getBoundingClientRect();
-              var ironImageRect = image.getBoundingClientRect();
-              var wrappedImageRect = image.$.img.getBoundingClientRect();
+              var ironImageRect = fixedHeightIronImage.getBoundingClientRect();
+              var wrappedImageRect = fixedHeightIronImage.$.img.getBoundingClientRect();
 
               expect(containerRect.height).to.equal(500);
               expect(ironImageRect.height).to.equal(500);
               expect(wrappedImageRect.height).to.equal(500);
 
-              fixedHeightContainer.removeChild(image);
               done();
             });
 
-            image.src = randomImageUrl();
+            fixedHeightIronImage.src = randomImageUrl();
           });
         });
       });
