@@ -132,9 +132,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               var ironImageRect = fixedWidthIronImage.getBoundingClientRect();
               var wrappedImageRect = fixedWidthIronImage.$.img.getBoundingClientRect();
 
-              expect(containerRect.width).to.equal(500);
-              expect(ironImageRect.width).to.equal(500);
-              expect(wrappedImageRect.width).to.equal(500);
+              expect(containerRect.width).to.be.closeTo(500, 0.5);
+              expect(ironImageRect.width).to.be.closeTo(500, 0.5);
+              expect(wrappedImageRect.width).to.be.closeTo(500, 0.5);
 
               done();
             });
@@ -151,9 +151,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               var ironImageRect = fixedHeightIronImage.getBoundingClientRect();
               var wrappedImageRect = fixedHeightIronImage.$.img.getBoundingClientRect();
 
-              expect(containerRect.height).to.equal(500);
-              expect(ironImageRect.height).to.equal(500);
-              expect(wrappedImageRect.height).to.equal(500);
+              expect(containerRect.height).to.be.closeTo(500, 0.5);
+              expect(ironImageRect.height).to.be.closeTo(500, 0.5);
+              expect(wrappedImageRect.height).to.be.closeTo(500, 0.5);
 
               done();
             });
