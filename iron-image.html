@@ -58,6 +58,11 @@ Examples:
     <iron-image style="width:400px; height:400px; background-color: lightgray;"
       sizing="cover" preload fade src="http://lorempixel.com/600/400"></iron-image>
 
+  Will fall back to a different image if the requested image is missing or fails to load:
+
+    <iron-image style="width:400px; height:400px;" sizing="cover" src="http://lorempixel.com/600/400"
+      fallback="data:image/gif;base64,..."></iron-image>
+
 Custom property | Description | Default
 ----------------|-------------|----------
 `--iron-image-placeholder` | Mixin applied to #placeholder | `{}`
@@ -174,6 +179,22 @@ Custom property | Description | Default
         },
 
         /**
+         * This image will be used as a fall back if the requested image fails to load.
+         */
+        fallback: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * Did the src image fail to load?
+         */
+        srcFail: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * When `preload` is true, setting `fade` to true will cause the image to
          * fade into place.
          */
@@ -227,7 +248,7 @@ Custom property | Description | Default
 
         _placeholderBackgroundUrl: {
           type: String,
-          computed: '_computePlaceholderBackgroundUrl(preload,placeholder)',
+          computed: '_computePlaceholderBackgroundUrl(preload,placeholder,srcFail)',
           observer: '_placeholderBackgroundUrlChanged'
         },
 
@@ -252,6 +273,15 @@ Custom property | Description | Default
         if (!this.hasAttribute('role')) {
           this.setAttribute('role', 'img');
         }
+
+        if (this.fallback) {
+          img = new Image();
+          img.src = this.src;
+          img.onerror = function() {
+            this.srcFail = true;
+            this.src = this.fallback;
+          }.bind(this);
+        }
       },
 
       _computeImageVisibility: function() {
@@ -275,6 +305,10 @@ Custom property | Description | Default
       },
 
       _computePlaceholderBackgroundUrl: function() {
+        if (this.srcFail && this.fallback) {
+          return 'url(' + this.fallback + ')';
+        }
+
         if (this.preload && this.placeholder) {
           return 'url(' + this.placeholder + ')';
         }
