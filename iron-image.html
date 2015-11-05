@@ -274,14 +274,7 @@ Custom property | Description | Default
           this.setAttribute('role', 'img');
         }
 
-        if (this.fallback) {
-          img = new Image();
-          img.src = this.src;
-          img.onerror = function() {
-            this.srcFail = true;
-            this.src = this.fallback;
-          }.bind(this);
-        }
+        this._fallbackCheck();
       },
 
       _computeImageVisibility: function() {
@@ -333,6 +326,8 @@ Custom property | Description | Default
       },
 
       _srcChanged: function(newSrc, oldSrc) {
+        this._fallbackCheck();
+
         if (newSrc !== oldSrc) {
           this.loaded = false;
         }
@@ -389,6 +384,17 @@ Custom property | Description | Default
           this.style.backgroundImage = this.src ? 'url(' + this.src + ')': '';
         } else {
           this.$.img.src = this.src || '';
+        }
+      },
+
+      _fallbackCheck: function() {
+        if (this.fallback) {
+          img = new Image();
+          img.src = this.src;
+          img.onerror = function () {
+            this.srcFail = true;
+            this.src = this.fallback;
+          }.bind(this);
         }
       }
     });
