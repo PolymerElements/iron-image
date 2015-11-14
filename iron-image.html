@@ -357,7 +357,7 @@ Custom property | Description | Default
       }
 
       if (this.sizing) {
-        this.style.backgroundImage = this.src ? 'url(' + this.src + ')': '';
+        this.style.backgroundImage = this.src ? 'url("' + this.src + '")': '';
       } else {
         this.$.img.src = this.src || '';
       }
