@@ -27,5 +27,6 @@
     "web-component-tester": "*",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
-  "main": "iron-image.html"
+  "main": "iron-image.html",
+  "ignore": []
 }
