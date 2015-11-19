@@ -98,12 +98,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 loadCount++;
 
                 if (loadCount === 2) {
+                  image.removeEventListener('loaded-changed', onLoadedChanged);
                   done();
                 } else {
                   image.src = randomImageUrl();
-                  image.removeEventListener('loaded-changed', onLoadedChanged);
                 }
               }
+            });
+
+            image.src = randomImageUrl();
+          });
+
+          test('error property is set when the image fails to load', function(done) {
+            image.addEventListener('error-changed', function onErrorChanged() {
+              assert(image.error, 'image has error property set');
+              image.removeEventListener('error-changed', onErrorChanged);
+              done();
+            });
+
+            image.src = 'http://0.0.0.0/invalid.jpg';
+          });
+
+          // Test for PolymerElements/iron-image#16.
+          test('placeholder is hidden after loading when src is changed from invalid to valid', function(done) {
+            image.preload = true;
+
+            image.addEventListener('error-changed', function onErrorChanged() {
+              image.removeEventListener('error-changed', onErrorChanged);
+
+              assert.equal(image.loading, false, 'errored image loading = false');
+              assert.equal(image.loaded, false, 'errored image loaded = false');
+              assert.equal(image.error, true, 'errored image error = true');
+
+              image.addEventListener('loaded-changed', function onLoadedChanged() {
+                if (!image.loaded) return;
+
+                image.removeEventListener('loaded-changed', onLoadedChanged);
+
+                assert.equal(image.loading, false, 'ok image loading = false');
+                assert.equal(image.loaded, true, 'ok image loaded = true');
+                assert.equal(image.error, false, 'ok image error = false');
+                assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder has style.display = none');
+
+                done();
+              });
+
+              image.src = randomImageUrl();
+            });
+
+            image.src = 'http://0.0.0.0/invalid.jpg';
+          });
+
+          // Test for PolymerElements/iron-image#23.
+          test('image is not shown below placeholder if previous image was loaded with' +
+               'sizing on and current image fails to load', function(done) {
+            image.preload = true;
+            image.sizing = 'cover';
+
+            image.addEventListener('loaded-changed', function onLoadedChanged() {
+              if (!image.loaded) return;
+              image.removeEventListener('loaded-changed', onLoadedChanged);
+
+              assert.notEqual(getComputedStyle(image.$.backdrop).backgroundImage, 'none', 'image visible after successful load');
+              assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder hidden after successful load');
+
+              image.addEventListener('error-changed', function onErrorChanged() {
+                if (!image.error) return;
+                image.removeEventListener('error-changed', onErrorChanged);
+
+                assert.equal(getComputedStyle(image.$.backdrop).backgroundImage, 'none', 'image hidden after failed load');
+                assert.notEqual(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder visible after failed load');
+
+                done();
+              });
+
+              image.src = 'http://0.0.0.0/invalid.jpg';
             });
 
             image.src = randomImageUrl();
