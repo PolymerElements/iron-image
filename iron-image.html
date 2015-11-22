@@ -206,6 +206,15 @@ Custom property | Description | Default
       },
 
       /**
+       * Read-only value that indicates that the src was invalid
+       */
+      error: {
+        notify: true,
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * Can be used to set the width of image (e.g. via binding); size may also be
        * set via CSS.
        */
@@ -249,7 +258,7 @@ Custom property | Description | Default
 
     observers: [
       '_transformChanged(sizing, position)',
-      '_loadBehaviorChanged(canLoad, preload, loaded)',
+      '_loadBehaviorChanged(src, canLoad, preload, loaded)',
       '_loadStateChanged(src, preload, loaded)',
     ],
 
@@ -338,14 +347,22 @@ Custom property | Description | Default
 
       if (this.requiresPreload) {
         img = new Image();
-        img.src = this.src;
 
         this.loading = true;
+        this.loaded = false;
+        this.error = false;
 
         img.onload = function() {
           this.loading = false;
           this.loaded = true;
         }.bind(this);
+
+        img.onerror = function() {
+          this.error = true;
+        }.bind(this);
+
+        img.src = this.src;
+
       } else {
         this.loaded = true;
       }
