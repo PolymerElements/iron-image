@@ -70,49 +70,48 @@ Custom property | Description | Default
 -->
 
 <dom-module id="iron-image">
-
-  <style>
-
-    :host {
-      display: inline-block;
-      overflow: hidden;
-      position: relative;
-    }
-
-    #sizedImgDiv {
-      display: none;
-      @apply(--layout-fit);
-    }
-
-    #img {
-      display: block;
-      width: var(--iron-image-width, auto);
-      height: var(--iron-image-height, auto);
-    }
-
-    :host([sizing]) #sizedImgDiv {
-      display: block;
-    }
-
-    :host([sizing]) #img {
-      display: none;
-    }
-
-    #placeholder {
-      background-color: inherit;
-      opacity: 1;
-      @apply(--layout-fit);
-      @apply(--iron-image-placeholder);
-    }
-
-    #placeholder.faded-out {
-      transition: opacity 0.5s linear;
-      opacity: 0;
-    }
-
-  </style>
-
   <template>
+    <style>
+      :host {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #sizedImgDiv {
+        @apply(--layout-fit);
+
+        display: none;
+      }
+
+      #img {
+        display: block;
+        width: var(--iron-image-width, auto);
+        height: var(--iron-image-height, auto);
+      }
+
+      :host([sizing]) #sizedImgDiv {
+        display: block;
+      }
+
+      :host([sizing]) #img {
+        display: none;
+      }
+
+      #placeholder {
+        @apply(--layout-fit);
+
+        background-color: inherit;
+        opacity: 1;
+
+        @apply(--iron-image-placeholder);
+      }
+
+      #placeholder.faded-out {
+        transition: opacity 0.5s linear;
+        opacity: 0;
+      }
+    </style>
 
     <div id="sizedImgDiv"
       role="img"
@@ -123,7 +122,6 @@ Custom property | Description | Default
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
-
   </template>
 
   <script>
