@@ -114,8 +114,8 @@ Custom property | Description | Default
 
   <template>
 
-    <div id="backdrop" hidden$="[[!sizing]]"></div>
-    <img id="img" role="none" hidden$="[[!!sizing]]">
+    <div id="backdrop" hidden$="[[_computeBackdropHidden(sizing)]]"></div>
+    <img id="img" role="none" hidden$="[[_computeImgHidden(sizing)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
@@ -159,7 +159,8 @@ Custom property | Description | Default
        */
       sizing: {
         type: String,
-        value: null
+        value: null,
+        reflectToAttribute: true
       },
 
       /**
@@ -266,7 +267,7 @@ Custom property | Description | Default
     ready: function() {
       var img = this.$.img;
 
-      img.onload = function(e) {
+      img.onload = function() {
         var resolvedSrc = Polymer.ResolveUrl.resolveUrl(this.src, this.ownerDocument.baseURI);
         if (img.src !== resolvedSrc) return;
 
@@ -300,7 +301,7 @@ Custom property | Description | Default
       this._setError(false);
     },
 
-    _reset: function(src) {
+    _reset: function() {
       this.$.img.removeAttribute('src');
       this.$.backdrop.style.backgroundImage = '';
 
@@ -315,6 +316,14 @@ Custom property | Description | Default
 
     _computePlaceholderClassName: function() {
       return (this.preload && this.fade && !this.loading && this.loaded) ? 'faded-out' : '';
+    },
+
+    _computeBackdropHidden: function() {
+      return !this.sizing;
+    },
+
+    _computeImgHidden: function() {
+      return !!this.sizing;
     },
 
     _widthChanged: function() {
