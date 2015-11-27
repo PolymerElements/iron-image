@@ -294,7 +294,7 @@ Custom property | Description | Default
       } else {
         this.$.img.removeAttribute('src');
       }
-      this.$.backdrop.style.backgroundImage = src ? 'url("' + encodeURI(src) + '")' : '';
+      this.$.backdrop.style.backgroundImage = src ? 'url("' + src + '")' : '';
 
       this._setLoading(true);
       this._setLoaded(false);
@@ -352,7 +352,7 @@ Custom property | Description | Default
 
     _placeholderChanged: function() {
       this.$.placeholder.style.backgroundImage =
-        this.placeholder ? 'url("' + encodeURI(this.placeholder) + '")' : '';
+        this.placeholder ? 'url("' + this.placeholder + '")' : '';
     },
 
     _transformChanged: function() {
