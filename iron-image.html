@@ -79,7 +79,7 @@ Custom property | Description | Default
       position: relative;
     }
 
-    #backdrop {
+    #sizedImgDiv {
       display: none;
       @apply(--layout-fit);
     }
@@ -90,7 +90,7 @@ Custom property | Description | Default
       height: var(--iron-image-height, auto);
     }
 
-    :host([sizing]) #backdrop {
+    :host([sizing]) #sizedImgDiv {
       display: block;
     }
 
@@ -114,7 +114,7 @@ Custom property | Description | Default
 
   <template>
 
-    <div id="backdrop" hidden$="[[_computeBackdropHidden(sizing)]]"></div>
+    <div id="sizedImgDiv" hidden$="[[_computeBackdropHidden(sizing)]]"></div>
     <img id="img" role="none" hidden$="[[_computeImgHidden(sizing)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
@@ -288,7 +288,7 @@ Custom property | Description | Default
         } else {
           this.$.img.removeAttribute('src');
         }
-        this.$.backdrop.style.backgroundImage = src ? 'url("' + src + '")' : '';
+        this.$.sizedImgDiv.style.backgroundImage = src ? 'url("' + src + '")' : '';
 
         this._setLoading(true);
         this._setLoaded(false);
@@ -297,7 +297,7 @@ Custom property | Description | Default
 
       _reset: function() {
         this.$.img.removeAttribute('src');
-        this.$.backdrop.style.backgroundImage = '';
+        this.$.sizedImgDiv.style.backgroundImage = '';
 
         this._setLoading(false);
         this._setLoaded(false);
@@ -350,18 +350,18 @@ Custom property | Description | Default
       },
 
       _transformChanged: function() {
-        var backdropStyle = this.$.backdrop.style;
+        var sizedImgDivStyle = this.$.sizedImgDiv.style;
         var placeholderStyle = this.$.placeholder.style;
 
-        backdropStyle.backgroundSize =
+        sizedImgDivStyle.backgroundSize =
         placeholderStyle.backgroundSize =
           this.sizing;
 
-        backdropStyle.backgroundPosition =
+        sizedImgDivStyle.backgroundPosition =
         placeholderStyle.backgroundPosition =
           this.sizing ? this.position : '';
 
-        backdropStyle.backgroundRepeat =
+        sizedImgDivStyle.backgroundRepeat =
         placeholderStyle.backgroundRepeat =
           this.sizing ? 'no-repeat' : '';
       },
