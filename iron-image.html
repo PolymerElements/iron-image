@@ -264,8 +264,7 @@ Custom property | Description | Default
         var img = this.$.img;
 
         img.onload = function() {
-          var resolvedSrc = Polymer.ResolveUrl.resolveUrl(this.src, this.ownerDocument.baseURI);
-          if (img.src !== resolvedSrc) return;
+          if (!this._matchesImgSrc(this.src)) return;
 
           this._setLoading(false);
           this._setLoaded(true);
@@ -273,8 +272,7 @@ Custom property | Description | Default
         }.bind(this);
 
         img.onerror = function() {
-          var resolvedSrc = Polymer.ResolveUrl.resolveUrl(this.src, this.ownerDocument.baseURI);
-          if (img.src !== resolvedSrc) return;
+          if (!this._matchesImgSrc(this.src)) return;
 
           this._reset();
 
@@ -367,6 +365,10 @@ Custom property | Description | Default
         placeholderStyle.backgroundRepeat =
           this.sizing ? 'no-repeat' : '';
       },
+
+      _matchesImgSrc: function(testSrc) {
+        return this.$.img.src === Polymer.ResolveUrl.resolveUrl(testSrc, this.ownerDocument.baseURI);
+      }
     });
   </script>
 </dom-module>
