@@ -266,7 +266,7 @@ Custom property | Description | Default
       observers: [
         '_transformChanged(sizing, position)',
         '_loadBehaviorChanged(canLoad, preload, loaded)',
-        '_loadStateChanged(src, preload, loaded)',
+        '_loadStateChanged(src, preload, loaded)'
       ],
 
       ready: function() {
@@ -388,7 +388,7 @@ Custom property | Description | Default
       },
 
       _fallbackCheck: function() {
-        if (this.fallback) {
+        if (this.fallback && this.src != this.fallback) {
           img = new Image();
           img.src = this.src;
           img.onerror = function () {
