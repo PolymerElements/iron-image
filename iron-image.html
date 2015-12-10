@@ -264,7 +264,7 @@ Custom property | Description | Default
         var img = this.$.img;
 
         img.onload = function() {
-          if (!this._matchesImgSrc(this.src)) return;
+          if (this.$.img.src !== this._resolveSrc(this.src)) return;
 
           this._setLoading(false);
           this._setLoaded(true);
@@ -272,7 +272,7 @@ Custom property | Description | Default
         }.bind(this);
 
         img.onerror = function() {
-          if (!this._matchesImgSrc(this.src)) return;
+          if (this.$.img.src !== this._resolveSrc(this.src)) return;
 
           this._reset();
 
@@ -280,6 +280,8 @@ Custom property | Description | Default
           this._setLoaded(false);
           this._setError(true);
         }.bind(this);
+
+        this._resolvedSrc = '';
       },
 
       _load: function(src) {
@@ -336,7 +338,9 @@ Custom property | Description | Default
       },
 
       _srcChanged: function(newSrc, oldSrc) {
-        if (newSrc === oldSrc) return;
+        var newResolvedSrc = this._resolveSrc(newSrc);
+        if (newResolvedSrc === this._resolvedSrc) return;
+        this._resolvedSrc = newResolvedSrc;
 
         this._reset();
         if (!this.preventLoad) {
@@ -366,8 +370,8 @@ Custom property | Description | Default
           this.sizing ? 'no-repeat' : '';
       },
 
-      _matchesImgSrc: function(testSrc) {
-        return this.$.img.src === Polymer.ResolveUrl.resolveUrl(testSrc, this.ownerDocument.baseURI);
+      _resolveSrc: function(testSrc) {
+        return Polymer.ResolveUrl.resolveUrl(testSrc, this.ownerDocument.baseURI);
       }
     });
   </script>
