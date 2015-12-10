@@ -115,7 +115,7 @@ Custom property | Description | Default
   <template>
 
     <div id="sizedImgDiv" hidden$="[[_computeBackdropHidden(sizing)]]"></div>
-    <img id="img" role="none" hidden$="[[_computeImgHidden(sizing)]]">
+    <img id="img" aria-hidden="true" hidden$="[[_computeImgHidden(sizing)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
