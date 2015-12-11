@@ -230,6 +230,80 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fixedHeightIronImage.src = randomImageUrl();
           });
         });
+
+        suite('accessibility', function() {
+          suite('sizing inactive', function() {
+            var image;
+
+            setup(function() {
+              image = fixture('TrivialImage');
+            });
+
+            test('#sizedImgDiv is hidden', function() {
+              var sizedImgDivStyle = window.getComputedStyle(image.$.sizedImgDiv);
+              assert.strictEqual(sizedImgDivStyle.display, 'none');
+            });
+
+            test('img has no alt text by default', function() {
+              assert.isFalse(image.$.img.hasAttribute('alt'));
+            });
+
+            test('img alt text is empty string when iron-image alt text is empty string', function() {
+              image.alt = '';
+
+              assert.isTrue(image.$.img.hasAttribute('alt'));
+              assert.strictEqual(image.$.img.getAttribute('alt'), '');
+            });
+
+            test('img alt text matches iron-image alt text when defined', function() {
+              image.alt = 'alt text value';
+
+              assert.isTrue(image.$.img.hasAttribute('alt'));
+              assert.strictEqual(image.$.img.getAttribute('alt'), 'alt text value');
+            });
+          });
+
+          suite('sizing active', function() {
+            var image;
+
+            setup(function() {
+              image = fixture('TrivialImage');
+              image.sizing = 'cover';
+            });
+
+            test('inner img is hidden', function() {
+              var imgStyle = window.getComputedStyle(image.$.img);
+              assert.strictEqual(imgStyle.display, 'none');
+            });
+
+            test('#sizedImgDiv has empty aria-label text by default', function() {
+              assert.isTrue(image.$.sizedImgDiv.hasAttribute('aria-label'));
+              assert.strictEqual(image.$.sizedImgDiv.getAttribute('aria-label'), '');
+            });
+
+            test('#sizedImgDiv has aria-hidden when iron-image alt text is empty string', function() {
+              image.alt = '';
+
+              assert.isTrue(image.$.sizedImgDiv.hasAttribute('aria-hidden'));
+              var hiddenValue = image.$.sizedImgDiv.getAttribute('aria-hidden');
+              assert.isTrue(hiddenValue === '' || hiddenValue === 'true');
+            });
+
+            test('#sizedImgDiv aria-label matches iron-image alt text when defined', function() {
+              image.alt = 'alt text value';
+
+              assert.isTrue(image.$.sizedImgDiv.hasAttribute('aria-label'));
+              assert.strictEqual(image.$.sizedImgDiv.getAttribute('aria-label'), 'alt text value');
+            });
+
+            test('#sizedImgDiv aria-label text is last path component of src when iron-image alt text is undefined', function() {
+              image.src = 'http://0.0.0.0/some/path.components/file.jpg?a=b&c=d#anchor';
+
+              assert.isTrue(image.$.sizedImgDiv.hasAttribute('aria-label'));
+              assert.strictEqual(image.$.sizedImgDiv.getAttribute('aria-label'), 'file.jpg');
+            });
+          });
+        });
       });
     </script>
   </body>

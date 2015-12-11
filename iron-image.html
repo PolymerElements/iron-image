@@ -114,8 +114,12 @@ Custom property | Description | Default
 
   <template>
 
-    <div id="sizedImgDiv" role="img" aria-label$="{{alt}}" hidden$="[[_computeBackdropHidden(sizing)]]"></div>
-    <img id="img" alt$="{{alt}}" hidden$="[[_computeImgHidden(sizing)]]">
+    <div id="sizedImgDiv"
+      role="img"
+      hidden$="[[_computeImgDivHidden(sizing)]]"
+      aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
+      aria-label$="[[_imgDivARIALabel]]"></div>
+    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
@@ -137,11 +141,17 @@ Custom property | Description | Default
         },
 
         /**
-         *
+         * A short text alternative for the image.
          */
         alt: {
           type: String,
-          value: ''
+          value: undefined,
+          reflectToAttribute: true
+        },
+
+        _imgDivARIALabel: {
+          type: String,
+          value: undefined
         },
 
         /**
@@ -261,7 +271,12 @@ Custom property | Description | Default
       },
 
       observers: [
-        '_transformChanged(sizing, position)'
+        '_transformChanged(sizing, position)',
+        // Duplicate observers are needed to work around a bug where Polymer
+        // does not update multi-parameter observers when one parameter
+        // changes to undefined.
+        '_updateImgDivARIALabel(alt)',
+        '_updateImgDivARIALabel(src)'
       ],
 
       ready: function() {
@@ -318,8 +333,29 @@ Custom property | Description | Default
         return (this.preload && this.fade && !this.loading && this.loaded) ? 'faded-out' : '';
       },
 
-      _computeBackdropHidden: function() {
+      _computeImgDivHidden: function() {
         return !this.sizing;
+      },
+
+      _computeImgDivARIAHidden: function() {
+        return this.alt === '' ? 'true' : undefined;
+      },
+
+      _updateImgDivARIALabel: function() {
+        if (this.alt !== undefined) {
+          this._imgDivARIALabel = this.alt;
+          return;
+        }
+
+        // Polymer.ResolveUrl.resolveUrl will resolve '' relative to a URL x to
+        // that URL x, but '' is the default for src.
+        if (this.src === '') {
+          this._imgDivARIALabel = '';
+          return;
+        }
+
+        var pathComponents = (new URL(this._resolveSrc(this.src))).pathname.split("/");
+        this._imgDivARIALabel = pathComponents[pathComponents.length - 1];
       },
 
       _computeImgHidden: function() {
