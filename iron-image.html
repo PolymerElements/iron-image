@@ -105,7 +105,7 @@ Custom property | Description | Default
 
   <template>
 
-    <img id="img" role="none" hidden$="[[_computeImageVisibility(sizing)]]">
+    <img id="img" role="none" alt="[[ alt ]]" hidden$="[[_computeImageVisibility(sizing)]]">
     <div id="placeholder" hidden$="[[_computePlaceholderVisibility(fade,loaded,preload)]]" class$="[[_computePlaceholderClassName(fade,loaded,preload)]]"></div>
     <content></content>
 
@@ -121,6 +121,14 @@ Custom property | Description | Default
          */
         src: {
           observer: '_srcChanged',
+          type: String,
+          value: ''
+        },
+        
+        /**
+         * Alternate text to describe the image for acessability and possible load failure.
+         */
+        alt: {
           type: String,
           value: ''
         },
