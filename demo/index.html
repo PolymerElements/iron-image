@@ -206,29 +206,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </template>
       <script>
-        Polymer({
-          is: 'demo-page',
 
-          preload: function(e) {
-            var img = document.querySelector('#' + e.target.getAttribute('target'));
-            img.src = './polymer.svg?' + Math.random();
-            e.target.textContent = 'Reload image';
-          },
+        window.addEventListener('WebComponentsReady', function() {
+          Polymer({
+            is: 'demo-page',
 
-          _computeLogoAltText: function(loading, loaded) {
-            var text = 'The Polymer logo. ';
+            preload: function(e) {
+              var img = document.querySelector('#' + e.target.getAttribute('target'));
+              img.src = './polymer.svg?' + Math.random();
+              e.target.textContent = 'Reload image';
+            },
 
-            if (loading) {
-              text += '(loading)';
-            } else if (loaded) {
-              text += '(loaded)';
-            } else {
-              text += '(not loaded)';
+            _computeLogoAltText: function(loading, loaded) {
+              var text = 'The Polymer logo. ';
+
+              if (loading) {
+                text += '(loading)';
+              } else if (loaded) {
+                text += '(loaded)';
+              } else {
+                text += '(not loaded)';
+              }
+
+              return text;
             }
-
-            return text;
-          }
+          });
         });
+
       </script>
     </dom-module>
   </body>
