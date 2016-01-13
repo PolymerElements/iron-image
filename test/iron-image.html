@@ -116,7 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               done();
             });
 
-            image.src = 'http://0.0.0.0/invalid.jpg';
+            image.src = '/this_image_should_not_exist.jpg';
           });
 
           // Test for PolymerElements/iron-image#16.
@@ -146,7 +146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               image.src = randomImageUrl();
             });
 
-            image.src = 'http://0.0.0.0/invalid.jpg';
+            image.src = '/this_image_should_not_exist.jpg';
           });
 
           // Test for PolymerElements/iron-image#23.
@@ -172,7 +172,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 done();
               });
 
-              image.src = 'http://0.0.0.0/invalid.jpg';
+              image.src = '/this_image_should_not_exist.jpg';
             });
 
             image.src = randomImageUrl();
@@ -297,7 +297,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             });
 
             test('#sizedImgDiv aria-label text is last path component of src when iron-image alt text is undefined', function() {
-              image.src = 'http://0.0.0.0/some/path.components/file.jpg?a=b&c=d#anchor';
+              image.src = '/some/path.components/file.jpg?a=b&c=d#anchor';
 
               assert.isTrue(image.$.sizedImgDiv.hasAttribute('aria-label'));
               assert.strictEqual(image.$.sizedImgDiv.getAttribute('aria-label'), 'file.jpg');
