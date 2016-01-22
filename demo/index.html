@@ -23,6 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style is="custom-style" include="demo-pages-shared-styles">
       .example {
         margin: 4px;
+        flex: 1;
+      }
+
+      code {
+        white-space: nowrap;
       }
     </style>
 
@@ -37,14 +42,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="vertical-section-container centered">
 
-      <h3>Default Image</h3>
+      <h3>A plain <code>iron-image</code>.</h3>
       <demo-snippet class="centered-demo">
         <template>
           <iron-image alt="The Polymer logo." src="./polymer.svg"></iron-image>
         </template>
       </demo-snippet>
 
-      <h3><code>sizing="cover"</code></h3>
+      <h3>
+        <code>sizing="cover"</code> expands the image to cover all of its
+        specified size.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
@@ -59,7 +67,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
       </demo-snippet>
 
-      <h3><code>sizing="contain"</code></h3>
+      <h3>
+        <code>sizing="contain"</code> expands the image to fit within its
+        specified size.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
@@ -74,52 +85,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
       </demo-snippet>
 
-      <h3>Full Width</h3>
+      <h3>
+        Use the <code>--iron-image-width</code> property to set the width of
+        the image wrapped by the <code>iron-image</code>.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
-            #example-full-width {
-              width: 300px;
-              height: 300px;
+            #example-full-width-container {
+              width: 200px;
+              border: 2px solid #444;
+              background: #444;
+            }
+
+            #example-full-width-container iron-image {
               background: #ddd;
             }
 
-            #example-full-width iron-image {
+            #example-full-width {
               width: 100%;
+              --iron-image-width: 100%;
+            }
+
+            #example-half-width {
+              width: 50%;
               --iron-image-width: 100%;
             }
           </style>
 
 
-          <div id="example-full-width">
-            <iron-image alt="The Polymer logo." src="./polymer.svg"></iron-image>
+          <div id="example-full-width-container">
+            <iron-image id="example-full-width" alt="The Polymer logo." src="./polymer.svg"></iron-image>
+            <iron-image id="example-half-width" alt="The Polymer logo." src="./polymer.svg"></iron-image>
           </div>
         </template>
       </demo-snippet>
 
-      <h3>Full Height</h3>
+      <h3>
+        Use the <code>--iron-image-height</code> property to set the height of
+        the image wrapped by the <code>iron-image</code>.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
-            #example-full-height {
-              height: 100px;
-              width: 100%;
+            #example-full-height-container {
+              height: 150px;
+              border: 2px solid #444;
+              background: #444;
+            }
+
+            #example-full-height-container iron-image{
               background: #ddd;
             }
 
-            #example-full-height iron-image {
+            #example-full-height {
               height: 100%;
+              --iron-image-height: 100%;
+            }
+
+            #example-half-height {
+              height: 50%;
               --iron-image-height: 100%;
             }
           </style>
 
-          <div id="example-full-height">
-            <iron-image alt="The Polymer logo." src="./polymer.svg"></iron-image>
+
+          <div id="example-full-height-container">
+            <iron-image id="example-full-height" alt="The Polymer logo." src="./polymer.svg"></iron-image>
+            <iron-image id="example-half-height" alt="The Polymer logo." src="./polymer.svg"></iron-image>
           </div>
         </template>
       </demo-snippet>
 
-      <h3>Without <code>preload</code> Attribute</h3>
+      <h3>
+        No placeholder is shown by default.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
@@ -140,7 +180,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
       </demo-snippet>
 
-      <h3><code>preload</code> Attribute with Placeholder Color</h3>
+      <h3>
+        The <code>preload</code> attribute shows a placeholder element in front
+        of the image before it has loaded. Use the
+        <code>--iron-image-placeholder</code> CSS mixin to style it.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
@@ -161,7 +205,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <br>
             <iron-image preload id="example-preload-1" alt="The Polymer logo." class="sized" sizing="contain"></iron-image>
             <br>
-            (without <code>fade</code> attribute)
+            Without the <code>fade</code> attribute, the placeholder element is
+            hidden with no transition when the image loads.
           </div>
           <div class="example preload">
             <button onclick="load('example-preload-2')">
@@ -170,12 +215,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <br>
             <iron-image preload fade id="example-preload-2" alt="The Polymer logo." class="sized" sizing="contain"></iron-image>
             <br>
-            (with <code>fade</code> attribute)
+            With the <code>fade</code> attribute, the placeholder element is
+            fades away when the image loads.
           </div>
         </template>
       </demo-snippet>
 
-      <h3><code>preload</code> Attribute with Placeholder Image</h3>
+      <h3>
+        Use the <code>placeholder</code> attribute to specify a background image
+        for the placeholder element.
+      </h3>
       <demo-snippet class="centered-demo">
         <template>
           <style is="custom-style">
