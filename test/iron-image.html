@@ -205,6 +205,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             image.src = randomImageUrl();
           });
+
+          test('img has no title by default', function() {
+            assert.isFalse(image.$.img.hasAttribute('title'));
+          });
+
+          test('img title is empty string when iron-image title text is empty string', function() {
+            image.title = '';
+
+            assert.isTrue(image.$.img.hasAttribute('title'));
+            assert.strictEqual(image.$.img.getAttribute('title'), '');
+          });
+
+          test('img title matches iron-image title text when defined', function() {
+            image.title = 'title value';
+
+            assert.isTrue(image.$.img.hasAttribute('title'));
+            assert.strictEqual(image.$.img.getAttribute('title'), 'title value');
+          });
+
         });
 
         suite('--iron-image-width, --iron-image-height', function() {
