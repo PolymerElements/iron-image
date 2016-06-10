@@ -90,6 +90,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </demo-snippet>
 
       <h3>
+        <code>sizing="contain|cover"</code> with <code>draggable-image</code> allows 
+        the image to still be right clicked as well as dragged.
+      </h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <style is="custom-style">
+            #example-sizing-contain {
+              width: 150px;
+              height: 150px;
+              background: #ddd;
+            }
+          </style>
+
+          <iron-image sizing="contain" draggable-image id="example-sizing-contain" alt="The Polymer logo." src="./polymer.svg"></iron-image>
+        </template>
+      </demo-snippet>
+
+      <h3>
         Use the <code>--iron-image-width</code> property to set the width of
         the image wrapped by the <code>iron-image</code>.
       </h3>
