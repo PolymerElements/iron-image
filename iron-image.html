@@ -397,11 +397,10 @@ Custom property | Description | Default
 
       _resolveSrc: function(testSrc) {
         var baseURI = this.ownerDocument.baseURI;
-        var resolvedUrl = Polymer.ResolveUrl.resolveUrl(testSrc, baseURI);
         if (baseURI) {
-          resolvedUrl = new URL(resolvedUrl, baseURI).href;
+          return new URL(testSrc, baseURI).href;
         }
-        return resolvedUrl;
+        return testSrc;
       }
     });
   </script>
