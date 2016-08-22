@@ -46,7 +46,7 @@ Examples:
   Will allow sized image be be right clicked and dragged:
 
     <iron-image style="width:400px; height:400px;" sizing="cover"
-      draggable-image src="http://lorempixel.com/600/400"></iron-image>
+      context-menu src="http://lorempixel.com/600/400"></iron-image>
 
   Will show light-gray background until the image loads:
 
@@ -103,7 +103,7 @@ Custom property | Description | Default
         display: none;
       }
 
-      :host([draggable-image][sizing]) #img {
+      :host([context-menu][sizing]) #img {
         display: block;
         height: 100%;
         left: 0;
@@ -133,7 +133,7 @@ Custom property | Description | Default
       hidden$="[[_computeImgDivHidden(sizing)]]"
       aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
       aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
-    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing, draggableImage)]]">
+    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing, contextMenu)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
@@ -280,7 +280,7 @@ Custom property | Description | Default
          * Can the <img/> be right clicked or dragged when sizing is set.
          */
 
-        draggableImage: {
+        contextMenu: {
           type: Boolean,
           value: false,
           reflectToAttribute: true
@@ -369,7 +369,7 @@ Custom property | Description | Default
       },
 
       _computeImgHidden: function() {
-        return !!this.sizing && !this.draggableImage;
+        return !!this.sizing && !this.contextMenu;
       },
 
       _widthChanged: function() {
