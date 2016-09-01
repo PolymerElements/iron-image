@@ -1,6 +1,6 @@
 {
   "name": "iron-image",
-  "version": "1.2.5",
+  "version": "2.0.0",
   "license": "http://polymer.github.io/LICENSE.txt",
   "description": "An image-displaying element with lots of convenient features",
   "private": true,
@@ -17,17 +17,19 @@
     "url": "git://github.com/PolymerElements/iron-image.git"
   },
   "dependencies": {
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "polymer": "git@github.com:Polymer/polymer.git#2.0-preview"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "paper-styles": "PolymerElements/paper-styles#^1.0.4",
-    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "iron-demo-helpers": "git@github.com:PolymerElements/iron-demo-helpers.git#2.0-preview",
+    "paper-styles": "git@github.com:PolymerElements/paper-styles.git#2.0-preview",
+    "test-fixture": "PolymerElements/test-fixture#custom-elements-v1",
     "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#v1",
+    "iron-flex-layout": "git@github.com:PolymerElements/iron-flex-layout.git#2.0-preview"
   },
   "main": "iron-image.html",
-  "ignore": []
+  "ignore": [],
+  "resolutions": {
+    "test-fixture": "custom-elements-v1"
+  }
 }

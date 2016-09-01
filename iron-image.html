@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 `iron-image` is an element for displaying an image that provides useful sizing and
@@ -79,7 +78,12 @@ Custom property | Description | Default
       }
 
       #sizedImgDiv {
-        @apply(--layout-fit);
+        /* TODO(bicknellr): Replace with --layout-fit when @apply is ready. */
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
         display: none;
       }
@@ -99,12 +103,17 @@ Custom property | Description | Default
       }
 
       #placeholder {
-        @apply(--layout-fit);
+        /* TODO(bicknellr): Replace with --layout-fit when @apply is ready. */
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
         background-color: inherit;
         opacity: 1;
 
-        @apply(--iron-image-placeholder);
+        @apply --iron-image-placeholder;
       }
 
       #placeholder.faded-out {
@@ -118,10 +127,10 @@ Custom property | Description | Default
       hidden$="[[_computeImgDivHidden(sizing)]]"
       aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
       aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
-    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]">
+    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]"
+      on-load="_imgOnLoad" on-error="_imgOnError">
     <div id="placeholder"
-      hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
-      class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
+      hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"></div>
   </template>
 
   <script>
@@ -133,7 +142,6 @@ Custom property | Description | Default
          * The URL of an image.
          */
         src: {
-          observer: '_srcChanged',
           type: String,
           value: ''
         },
@@ -153,8 +161,7 @@ Custom property | Description | Default
          */
         preventLoad: {
           type: Boolean,
-          value: false,
-          observer: '_preventLoadChanged'
+          value: false
         },
 
         /**
@@ -263,61 +270,48 @@ Custom property | Description | Default
       },
 
       observers: [
-        '_transformChanged(sizing, position)'
+        '_loadStateObserver(src, preventLoad)',
+        '_transformChanged(sizing, position)',
+        '_setPlaceholderClasses(preload, fade, loading, loaded)'
       ],
 
-      ready: function() {
-        var img = this.$.img;
-
-        img.onload = function() {
-          if (this.$.img.src !== this._resolveSrc(this.src)) return;
-
-          this._setLoading(false);
-          this._setLoaded(true);
-          this._setError(false);
-        }.bind(this);
-
-        img.onerror = function() {
-          if (this.$.img.src !== this._resolveSrc(this.src)) return;
-
-          this._reset();
-
-          this._setLoading(false);
-          this._setLoaded(false);
-          this._setError(true);
-        }.bind(this);
-
+      created: function() {
         this._resolvedSrc = '';
       },
 
-      _load: function(src) {
-        if (src) {
-          this.$.img.src = src;
-        } else {
-          this.$.img.removeAttribute('src');
+      _imgOnLoad: function() {
+        if (this.$.img.src !== this._resolveSrc(this.src)) {
+          return;
         }
-        this.$.sizedImgDiv.style.backgroundImage = src ? 'url("' + src + '")' : '';
 
-        this._setLoading(!!src);
-        this._setLoaded(false);
+        this._setLoading(false);
+        this._setLoaded(true);
         this._setError(false);
       },
 
-      _reset: function() {
+      _imgOnError: function() {
+        if (this.$.img.src !== this._resolveSrc(this.src)) {
+          return;
+        }
+
         this.$.img.removeAttribute('src');
         this.$.sizedImgDiv.style.backgroundImage = '';
 
         this._setLoading(false);
         this._setLoaded(false);
-        this._setError(false);
+        this._setError(true);
       },
 
       _computePlaceholderHidden: function() {
         return !this.preload || (!this.fade && !this.loading && this.loaded);
       },
 
-      _computePlaceholderClassName: function() {
-        return (this.preload && this.fade && !this.loading && this.loaded) ? 'faded-out' : '';
+      _setPlaceholderClasses: function() {
+        if (this.preload && this.fade && !this.loading && this.loaded) {
+          this.$.placeholder.classList.add('faded-out');
+        } else {
+          this.$.placeholder.classList.remove('faded-out');
+        }
       },
 
       _computeImgDivHidden: function() {
@@ -355,21 +349,27 @@ Custom property | Description | Default
         this.style.height = isNaN(this.height) ? this.height : this.height + 'px';
       },
 
-      _preventLoadChanged: function() {
-        if (this.preventLoad || this.loaded) return;
-
-        this._reset();
-        this._load(this.src);
-      },
-
-      _srcChanged: function(newSrc, oldSrc) {
-        var newResolvedSrc = this._resolveSrc(newSrc);
-        if (newResolvedSrc === this._resolvedSrc) return;
+      _loadStateObserver: function(src, preventLoad) {
+        var newResolvedSrc = this._resolveSrc(src);
+        if (newResolvedSrc === this._resolvedSrc) {
+          return;
+        }
         this._resolvedSrc = newResolvedSrc;
 
-        this._reset();
-        if (!this.preventLoad) {
-          this._load(newSrc);
+        this.$.img.removeAttribute('src');
+        this.$.sizedImgDiv.style.backgroundImage = '';
+
+        if (src === '' || preventLoad) {
+          this._setLoading(false);
+          this._setLoaded(false);
+          this._setError(false);
+        } else {
+          this.$.img.src = this._resolvedSrc;
+          this.$.sizedImgDiv.style.backgroundImage = 'url("' + this._resolvedSrc + '")';
+
+          this._setLoading(true);
+          this._setLoaded(false);
+          this._setError(false);
         }
       },
 
@@ -396,7 +396,7 @@ Custom property | Description | Default
       },
 
       _resolveSrc: function(testSrc) {
-        var baseURI = /** @type {string} */(this.ownerDocument.baseURI);
+        var baseURI = this.ownerDocument.baseURI;
         return (new URL(Polymer.ResolveUrl.resolveUrl(testSrc, baseURI), baseURI)).href;
       }
     });
