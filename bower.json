@@ -17,15 +17,15 @@
     "url": "git://github.com/PolymerElements/iron-image.git"
   },
   "dependencies": {
-    "polymer": "git@github.com:Polymer/polymer.git#2.0-preview"
+    "polymer": "Polymer/polymer#2.0-preview",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview"
   },
   "devDependencies": {
-    "iron-demo-helpers": "git@github.com:PolymerElements/iron-demo-helpers.git#2.0-preview",
-    "paper-styles": "git@github.com:PolymerElements/paper-styles.git#2.0-preview",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0-preview",
+    "paper-styles": "PolymerElements/paper-styles#2.0-preview",
     "test-fixture": "PolymerElements/test-fixture#custom-elements-v1",
     "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#v1",
-    "iron-flex-layout": "git@github.com:PolymerElements/iron-flex-layout.git#2.0-preview"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#v1"
   },
   "main": "iron-image.html",
   "ignore": [],
