@@ -167,8 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 assert.equal(image.loaded, true, 'ok image loaded = true');
                 assert.equal(image.error, false, 'ok image error = false');
 
-                // TODO(bicknellr): Remove these `setTimeout`s or otherwise
-                // update tests once Polymer/polymer#3910 is resolved.
+                // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
                 setTimeout(function() {
                   assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder has style.display = none');
 
@@ -192,6 +191,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               if (!image.loaded) return;
               image.removeEventListener('loaded-changed', onLoadedChanged);
 
+              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
               setTimeout(function() {
                 assert.notEqual(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image visible after successful load');
                 assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder hidden after successful load');
@@ -200,6 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   if (!image.error) return;
                   image.removeEventListener('error-changed', onErrorChanged);
 
+                  // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
                   setTimeout(function() {
                     assert.equal(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image hidden after failed load');
                     assert.notEqual(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder visible after failed load');
@@ -233,6 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fixedWidthIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
               fixedWidthIronImage.$.img.removeEventListener('load', onLoadedChanged);
 
+              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
               setTimeout(function() {
                 var containerRect = fixedWidthContainer.getBoundingClientRect();
                 var ironImageRect = fixedWidthIronImage.getBoundingClientRect();
@@ -253,6 +255,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fixedHeightIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
               fixedHeightIronImage.$.img.removeEventListener('load', onLoadedChanged);
 
+              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
               setTimeout(function() {
                 var containerRect = fixedHeightContainer.getBoundingClientRect();
                 var ironImageRect = fixedHeightIronImage.getBoundingClientRect();
