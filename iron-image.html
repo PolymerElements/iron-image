@@ -115,7 +115,7 @@ Custom property | Description | Default
 
     <div id="sizedImgDiv"
       role="img"
-      hidden$="[[_computeImgDivHidden(sizing)]]"
+      hidden$="[[_computeImgDivHidden(sizing, loaded)]]"
       aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
       aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
     <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]">
@@ -321,7 +321,7 @@ Custom property | Description | Default
       },
 
       _computeImgDivHidden: function() {
-        return !this.sizing;
+        return !this.sizing || !this.loaded;
       },
 
       _computeImgDivARIAHidden: function() {
