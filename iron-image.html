@@ -121,7 +121,8 @@ Custom property | Description | Default
     <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]"
       on-load="_imgOnLoad" on-error="_imgOnError">
     <div id="placeholder"
-      hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"></div>
+      hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
+      class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
   </template>
 
   <script>
@@ -261,9 +262,8 @@ Custom property | Description | Default
       },
 
       observers: [
-        '_loadStateObserver(src, preventLoad)',
         '_transformChanged(sizing, position)',
-        '_setPlaceholderClasses(preload, fade, loading, loaded)'
+        '_loadStateObserver(src, preventLoad)'
       ],
 
       created: function() {
@@ -297,12 +297,8 @@ Custom property | Description | Default
         return !this.preload || (!this.fade && !this.loading && this.loaded);
       },
 
-      _setPlaceholderClasses: function() {
-        if (this.preload && this.fade && !this.loading && this.loaded) {
-          this.$.placeholder.classList.add('faded-out');
-        } else {
-          this.$.placeholder.classList.remove('faded-out');
-        }
+      _computePlaceholderClassName: function() {
+        return (this.preload && this.fade && !this.loading && this.loaded) ? 'faded-out' : '';
       },
 
       _computeImgDivHidden: function() {
