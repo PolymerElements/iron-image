@@ -324,9 +324,10 @@ Custom property | Description | Default
         if (this.src === '') {
           return '';
         }
-
-        var pathComponents = (new URL(this._resolveSrc(this.src))).pathname.split("/");
-        return pathComponents[pathComponents.length - 1];
+        // Avoid using new URL since it is not supported in IE. 
+        var resolved = this._resolveSrc(this.src);
+        // Remove query parts, get file name.
+        return resolved.replace(/[?|#].*/g, '').split('/').pop();
       },
 
       _computeImgHidden: function() {
@@ -388,8 +389,14 @@ Custom property | Description | Default
       },
 
       _resolveSrc: function(testSrc) {
-        var baseURI = this.$.baseURIAnchor.href;
-        return (new URL(Polymer.ResolveUrl.resolveUrl(testSrc, baseURI), baseURI)).href;
+        var resolved = Polymer.ResolveUrl.resolveUrl(testSrc, this.$.baseURIAnchor.href);
+        // Avoid using new URL since it is not supported in IE.
+        if (resolved[0] === '/') {
+          // In IE location.origin might not work
+          // https://connect.microsoft.com/IE/feedback/details/1763802/location-origin-is-undefined-in-ie-11-on-windows-10-but-works-on-windows-7
+          resolved = (location.origin || location.protocol + '//' + location.host) + resolved;
+        }
+        return resolved;
       }
     });
   </script>
