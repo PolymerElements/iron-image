@@ -168,13 +168,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 assert.equal(image.loading, false, 'ok image loading = false');
                 assert.equal(image.loaded, true, 'ok image loaded = true');
                 assert.equal(image.error, false, 'ok image error = false');
+                assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder has style.display = none');
 
-                // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
-                setTimeout(function() {
-                  assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder has style.display = none');
-
-                  done();
-                }, 1);
+                done();
               });
 
               image.src = randomImageUrl();
@@ -193,26 +189,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               if (!image.loaded) return;
               image.removeEventListener('loaded-changed', onLoadedChanged);
 
-              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
-              setTimeout(function() {
-                assert.notEqual(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image visible after successful load');
-                assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder hidden after successful load');
+              assert.notEqual(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image visible after successful load');
+              assert.equal(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder hidden after successful load');
 
-                image.addEventListener('error-changed', function onErrorChanged() {
-                  if (!image.error) return;
-                  image.removeEventListener('error-changed', onErrorChanged);
+              image.addEventListener('error-changed', function onErrorChanged() {
+                if (!image.error) return;
+                image.removeEventListener('error-changed', onErrorChanged);
 
-                  // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
-                  setTimeout(function() {
-                    assert.equal(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image hidden after failed load');
-                    assert.notEqual(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder visible after failed load');
+                assert.equal(getComputedStyle(image.$.sizedImgDiv).backgroundImage, 'none', 'image hidden after failed load');
+                assert.notEqual(getComputedStyle(image.$.placeholder).display, 'none', 'placeholder visible after failed load');
 
-                    done();
-                  }, 1);
-                });
+                done();
+              });
 
-                image.src = '/this_image_should_not_exist.jpg';
-              }, 1);
+              image.src = '/this_image_should_not_exist.jpg';
             });
 
             image.src = randomImageUrl();
@@ -236,18 +226,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fixedWidthIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
               fixedWidthIronImage.$.img.removeEventListener('load', onLoadedChanged);
 
-              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
-              setTimeout(function() {
-                var containerRect = fixedWidthContainer.getBoundingClientRect();
-                var ironImageRect = fixedWidthIronImage.getBoundingClientRect();
-                var wrappedImageRect = fixedWidthIronImage.$.img.getBoundingClientRect();
+              var containerRect = fixedWidthContainer.getBoundingClientRect();
+              var ironImageRect = fixedWidthIronImage.getBoundingClientRect();
+              var wrappedImageRect = fixedWidthIronImage.$.img.getBoundingClientRect();
 
-                expect(containerRect.width).to.be.closeTo(500, 0.5);
-                expect(ironImageRect.width).to.be.closeTo(500, 0.5);
-                expect(wrappedImageRect.width).to.be.closeTo(500, 0.5);
+              expect(containerRect.width).to.be.closeTo(500, 0.5);
+              expect(ironImageRect.width).to.be.closeTo(500, 0.5);
+              expect(wrappedImageRect.width).to.be.closeTo(500, 0.5);
 
-                done();
-              }, 1);
+              done();
             });
 
             fixedWidthIronImage.src = randomImageUrl();
@@ -257,18 +244,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fixedHeightIronImage.$.img.addEventListener('load', function onLoadedChanged(e) {
               fixedHeightIronImage.$.img.removeEventListener('load', onLoadedChanged);
 
-              // TODO(bicknellr): Remove this `setTimeout` once Polymer/polymer#3910 is resolved.
-              setTimeout(function() {
-                var containerRect = fixedHeightContainer.getBoundingClientRect();
-                var ironImageRect = fixedHeightIronImage.getBoundingClientRect();
-                var wrappedImageRect = fixedHeightIronImage.$.img.getBoundingClientRect();
+              var containerRect = fixedHeightContainer.getBoundingClientRect();
+              var ironImageRect = fixedHeightIronImage.getBoundingClientRect();
+              var wrappedImageRect = fixedHeightIronImage.$.img.getBoundingClientRect();
 
-                expect(containerRect.height).to.be.closeTo(500, 0.5);
-                expect(ironImageRect.height).to.be.closeTo(500, 0.5);
-                expect(wrappedImageRect.height).to.be.closeTo(500, 0.5);
+              expect(containerRect.height).to.be.closeTo(500, 0.5);
+              expect(ironImageRect.height).to.be.closeTo(500, 0.5);
+              expect(wrappedImageRect.height).to.be.closeTo(500, 0.5);
 
-                done();
-              }, 1);
+              done();
             });
 
             fixedHeightIronImage.src = randomImageUrl();
