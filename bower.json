@@ -19,7 +19,6 @@
   "main": "iron-image.html",
   "ignore": [],
   "dependencies": {
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview",
     "polymer": "Polymer/polymer#^2.0.0-rc.1"
   },
   "devDependencies": {
@@ -32,7 +31,6 @@
   "variants": {
     "1.x": {
       "dependencies": {
-        "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
         "polymer": "Polymer/polymer#^1.1.0"
       },
       "devDependencies": {

@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 `iron-image` is an element for displaying an image that provides useful sizing and
@@ -83,7 +82,11 @@ Custom property | Description | Default
       }
 
       #sizedImgDiv {
-        @apply --layout-fit;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
 
         display: none;
       }
@@ -103,7 +106,11 @@ Custom property | Description | Default
       }
 
       #placeholder {
-        @apply --layout-fit;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
 
         background-color: inherit;
         opacity: 1;
