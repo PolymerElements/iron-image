@@ -331,7 +331,10 @@ Custom property | Description | Default
         if (this.src === '') {
           return '';
         }
-        // Avoid using new URL since it is not supported in IE. 
+
+        // NOTE: Use of `URL` was removed here because IE11 doesn't support
+        // constructing it. If this ends up being problematic, we should
+        // consider reverting and adding the URL polyfill as a dev dependency.
         var resolved = this._resolveSrc(this.src);
         // Remove query parts, get file name.
         return resolved.replace(/[?|#].*/g, '').split('/').pop();
@@ -397,7 +400,9 @@ Custom property | Description | Default
 
       _resolveSrc: function(testSrc) {
         var resolved = Polymer.ResolveUrl.resolveUrl(testSrc, this.$.baseURIAnchor.href);
-        // Avoid using new URL since it is not supported in IE.
+        // NOTE: Use of `URL` was removed here because IE11 doesn't support
+        // constructing it. If this ends up being problematic, we should
+        // consider reverting and adding the URL polyfill as a dev dependency.
         if (resolved[0] === '/') {
           // In IE location.origin might not work
           // https://connect.microsoft.com/IE/feedback/details/1763802/location-origin-is-undefined-in-ie-11-on-windows-10-but-works-on-windows-7
