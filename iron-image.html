@@ -396,8 +396,11 @@ Custom property | Description | Default
       },
 
       _resolveSrc: function(testSrc) {
-        var baseURI = /** @type {string} */(this.ownerDocument.baseURI);
-        return (new URL(Polymer.ResolveUrl.resolveUrl(testSrc, baseURI), baseURI)).href;
+        var baseURI = this.ownerDocument.baseURI;
+        if (baseURI) {
+          return new URL(testSrc, baseURI).href;
+        }
+        return testSrc;
       }
     });
   </script>
