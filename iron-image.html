@@ -251,6 +251,10 @@ Custom property | Description | Default
         /**
          * Can be used to set the width of image (e.g. via binding); size may also be
          * set via CSS.
+
+         * @attribute width
+         * @type number
+         * @default null
          */
         width: {
           observer: '_widthChanged',
@@ -270,6 +274,22 @@ Custom property | Description | Default
           observer: '_heightChanged',
           type: Number,
           value: null
+        },
+
+        /**
+         * Can be used to get the natural width of image.
+         */
+        naturalWidth: {
+          type: Number,
+          computed: '_computeImgNaturalWidth(loaded)'
+        },
+
+        /**
+         * Can be used to get the natural height of image.
+         */
+        naturalHeight: {
+          type: Number,
+          computed: '_computeImgNaturalHeight(loaded)'
         },
       },
 
@@ -342,6 +362,14 @@ Custom property | Description | Default
 
       _computeImgHidden: function() {
         return !!this.sizing;
+      },
+
+      _computeImgNaturalWidth(loaded) {
+        return this.$.img.naturalWidth;
+      },
+
+      _computeImgNaturalHeight(loaded) {
+        return this.$.img.naturalHeight;
       },
 
       _widthChanged: function() {
