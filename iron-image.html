@@ -43,6 +43,11 @@ Examples:
     <iron-image style="width:400px; height:400px;" sizing="cover"
       src="http://lorempixel.com/600/400"></iron-image>
 
+  Will allow sized image be be right clicked and dragged:
+
+    <iron-image style="width:400px; height:400px;" sizing="cover"
+      has-context-menu src="http://lorempixel.com/600/400"></iron-image>
+
   Will show light-gray background until the image loads:
 
     <iron-image style="width:400px; height:400px; background-color: lightgray;"
@@ -98,6 +103,16 @@ Custom property | Description | Default
         display: none;
       }
 
+      :host([has-context-menu][sizing]) #img {
+        display: block;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: relative;
+        top: 0;
+        width: 100%;
+      }
+
       #placeholder {
         @apply(--layout-fit);
 
@@ -118,7 +133,7 @@ Custom property | Description | Default
       hidden$="[[_computeImgDivHidden(sizing)]]"
       aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
       aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
-    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]">
+    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing, hasContextMenu)]]">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
@@ -260,6 +275,20 @@ Custom property | Description | Default
           type: Number,
           value: null
         },
+
+        /**
+         * Can the <img/> be right clicked or dragged when sizing is set.
+		 *
+         * @attribute hasContextMenu
+         * @type boolean
+         * @default false
+         */
+
+        hasContextMenu: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
       },
 
       observers: [
@@ -344,7 +373,7 @@ Custom property | Description | Default
       },
 
       _computeImgHidden: function() {
-        return !!this.sizing;
+        return !!this.sizing && !this.hasContextMenu;
       },
 
       _widthChanged: function() {

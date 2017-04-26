@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
 
     <title>iron-image demo</title>
-    
+
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -86,6 +86,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </style>
 
           <iron-image sizing="contain" id="example-sizing-contain" alt="The Polymer logo." src="./polymer.svg"></iron-image>
+        </template>
+      </demo-snippet>
+
+      <h3>
+        <code>sizing="contain|cover"</code> with <code>has-context-menu</code> allows
+        the image to still be right clicked as well as dragged.
+      </h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <style is="custom-style">
+            #example-sizing-contain {
+              width: 150px;
+              height: 150px;
+              background: #ddd;
+            }
+          </style>
+
+          <iron-image sizing="contain" has-context-menu id="example-sizing-contain" alt="The Polymer logo." src="./polymer.svg"></iron-image>
         </template>
       </demo-snippet>
 
