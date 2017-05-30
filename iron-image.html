@@ -130,8 +130,12 @@ Custom property | Description | Default
       hidden$="[[_computeImgDivHidden(sizing)]]"
       aria-hidden$="[[_computeImgDivARIAHidden(alt)]]"
       aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
-    <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]"
-      on-load="_imgOnLoad" on-error="_imgOnError">
+    <img id="img"
+      alt$="[[alt]]"
+      hidden$="[[_computeImgHidden(sizing)]]"
+      crossorigin$="[[crossorigin]]"
+      on-load="_imgOnLoad"
+      on-error="_imgOnError">
     <div id="placeholder"
       hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
       class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
@@ -154,6 +158,14 @@ Custom property | Description | Default
          * A short text alternative for the image.
          */
         alt: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * CORS enabled images support: https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+         */
+        crossorigin: {
           type: String,
           value: null
         },
