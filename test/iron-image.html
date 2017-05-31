@@ -207,6 +207,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             image.src = randomImageUrl();
           });
+
+          // Tests for PolymerElements/iron-image#115
+          test('image is not loaded when prevent-load is set', function() {
+            var attemptedLoadSpy = sinon.spy(image, '_setLoading');
+            image.preventLoad = true;
+            image.src = randomImageUrl();
+
+            expect(attemptedLoadSpy).not.to.have.been.calledWith(true);
+            expect(image._resolvedSrc).not.to.be.ok;
+          });
+          test('image is loaded when prevent-load has been removed after src changed', function(done) {
+            var attemptedLoadSpy = sinon.spy(image, '_setLoading');
+            image.preventLoad = true;
+            image.src = randomImageUrl();
+            expect(attemptedLoadSpy).not.to.have.been.calledWith(true);
+
+            image.addEventListener('loaded-changed', function onLoadedChanged() {
+              if (!image.loaded) return;
+              image.removeEventListener('loaded-changed', onLoadedChanged);
+
+              expect(attemptedLoadSpy).to.have.been.calledWith(true);
+              expect(image._resolvedSrc).to.be.ok;
+              done();
+            });
+
+            image.preventLoad = false;
+          });
         });
 
         suite('--iron-image-width, --iron-image-height', function() {
