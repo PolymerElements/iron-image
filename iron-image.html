@@ -369,7 +369,6 @@ Custom property | Description | Default
         if (newResolvedSrc === this._resolvedSrc) {
           return;
         }
-        this._resolvedSrc = newResolvedSrc;
 
         this.$.img.removeAttribute('src');
         this.$.sizedImgDiv.style.backgroundImage = '';
@@ -379,6 +378,7 @@ Custom property | Description | Default
           this._setLoaded(false);
           this._setError(false);
         } else {
+          this._resolvedSrc = newResolvedSrc;
           this.$.img.src = this._resolvedSrc;
           this.$.sizedImgDiv.style.backgroundImage = 'url("' + this._resolvedSrc + '")';
 
