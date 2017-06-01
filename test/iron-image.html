@@ -149,7 +149,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             image.src = '/this_image_should_not_exist.jpg';
           });
 
-          // Test for PolymerElements/iron-image#16.
           test('placeholder is hidden after loading when src is changed from invalid to valid', function(done) {
             image.preload = true;
 
@@ -179,7 +178,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             image.src = '/this_image_should_not_exist.jpg';
           });
 
-          // Test for PolymerElements/iron-image#23.
           test('image is not shown below placeholder if previous image was loaded with' +
                ' sizing on and current image fails to load', function(done) {
             image.preload = true;
@@ -208,27 +206,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             image.src = randomImageUrl();
           });
 
-          // Tests for PolymerElements/iron-image#115
           test('image is not loaded when prevent-load is set', function() {
-            var attemptedLoadSpy = sinon.spy(image, '_setLoading');
+            var attemptedLoadSpy = sinon.spy();
             image.preventLoad = true;
+            image.addEventListener('loading-changed', attemptedLoadSpy);
+            expect(image.loading).not.to.be.ok;
             image.src = randomImageUrl();
 
-            expect(attemptedLoadSpy).not.to.have.been.calledWith(true);
-            expect(image._resolvedSrc).not.to.be.ok;
+            expect(attemptedLoadSpy).not.to.have.been.called;
           });
+
           test('image is loaded when prevent-load has been removed after src changed', function(done) {
-            var attemptedLoadSpy = sinon.spy(image, '_setLoading');
+            var attemptedLoadSpy = sinon.spy();
             image.preventLoad = true;
+            image.addEventListener('loaded-changed', attemptedLoadSpy);
             image.src = randomImageUrl();
-            expect(attemptedLoadSpy).not.to.have.been.calledWith(true);
+            expect(attemptedLoadSpy).not.to.have.been.called;
+            image.removeEventListener('loaded-changed', attemptedLoadSpy);
 
             image.addEventListener('loaded-changed', function onLoadedChanged() {
               if (!image.loaded) return;
               image.removeEventListener('loaded-changed', onLoadedChanged);
 
-              expect(attemptedLoadSpy).to.have.been.calledWith(true);
-              expect(image._resolvedSrc).to.be.ok;
               done();
             });
 
