@@ -233,6 +233,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             image.preventLoad = false;
           });
+
+          test('image is loaded when prevent-load is set to false after cycling `src`', function(done) {
+            const initialSrc = randomImageUrl();
+
+            image.addEventListener('loaded-changed', function loadedChanged() {
+              image.removeEventListener('loaded-changed', loadedChanged);
+
+              assert(image.loaded);
+              assert(!image.loading);
+              assert(!image.error);
+
+              image.preventLoad = true;
+              image.src = randomImageUrl();
+              image.src = initialSrc;
+
+              assert(!image.loaded);
+              assert(!image.loading);
+              assert(!image.error);
+
+              image.addEventListener('loaded-changed', function loadedChanged() {
+                image.removeEventListener('loaded-changed', loadedChanged);
+
+                assert(image.loaded);
+                assert(!image.loading);
+                assert(!image.error);
+
+                done();
+              });
+
+              image.preventLoad = false;
+            });
+
+            image.src = initialSrc;
+          });
         });
 
         suite('--iron-image-width, --iron-image-height', function() {
