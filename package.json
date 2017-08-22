@@ -1,0 +1,24 @@
+{
+  "name": "@polymer/iron-image",
+  "flat": true,
+  "version": "3.0.0-pre.1",
+  "description": "An image-displaying element with lots of convenient features",
+  "contributors": [
+    "The Polymer Authors"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "media"
+  ],
+  "main": "iron-image.html",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PolymerElements/iron-image.git"
+  },
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0-pre.1"
+  },
+  "devDependencies": {}
+}
