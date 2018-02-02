@@ -1,0 +1,10 @@
+{
+  "name": "@polymer/iron-image",
+  "private": true,
+  "description": "An image-displaying element with lots of convenient features",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PolymerElements/iron-image.git"
+  },
+  "license": "http://polymer.github.io/LICENSE.txt"
+}
