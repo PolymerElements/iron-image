@@ -146,20 +146,20 @@ interface IronImageElement extends Polymer.Element {
    * set via CSS.
    */
   height: number|null|undefined;
-  created(): any;
-  _imgOnLoad(): any;
-  _imgOnError(): any;
+  created(): void;
+  _imgOnLoad(): void;
+  _imgOnError(): void;
   _computePlaceholderHidden(): any;
   _computePlaceholderClassName(): any;
   _computeImgDivHidden(): any;
   _computeImgDivARIAHidden(): any;
   _computeImgDivARIALabel(): any;
   _computeImgHidden(): any;
-  _widthChanged(): any;
-  _heightChanged(): any;
-  _loadStateObserver(src: any, preventLoad: any): any;
-  _placeholderChanged(): any;
-  _transformChanged(): any;
+  _widthChanged(): void;
+  _heightChanged(): void;
+  _loadStateObserver(src: any, preventLoad: any): void;
+  _placeholderChanged(): void;
+  _transformChanged(): void;
   _resolveSrc(testSrc: any): any;
 }
 
