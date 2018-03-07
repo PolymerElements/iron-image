@@ -214,6 +214,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         suite('preventLoad', function() {
+          setup(function() {
+            image = fixture('TrivialImage');
+          });
+
           test('The `prevent-load` attribute prevents the image from loading when created.', function() {
             var image = fixture('PreventLoad');
 
