@@ -71,9 +71,9 @@ Custom property | Description | Default
 */
 import '@polymer/polymer/polymer-legacy.js';
 
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { resolveUrl } from '@polymer/polymer/lib/utils/resolve-url.js';
+import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+import {resolveUrl} from '@polymer/polymer/lib/utils/resolve-url.js';
 Polymer({
   _template: html`
     <style>
@@ -355,8 +355,7 @@ Polymer({
   },
 
   _resolveSrc: function(testSrc) {
-    var resolved =
-        resolveUrl(testSrc, this.$.baseURIAnchor.href);
+    var resolved = resolveUrl(testSrc, this.$.baseURIAnchor.href);
     // NOTE: Use of `URL` was removed here because IE11 doesn't support
     // constructing it. If this ends up being problematic, we should
     // consider reverting and adding the URL polyfill as a dev dependency.
