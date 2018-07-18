@@ -7,6 +7,12 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
+import '@polymer/polymer/polymer-legacy.js';
+
+import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+import {resolveUrl} from '@polymer/polymer/lib/utils/resolve-url.js';
+
 /**
 `iron-image` is an element for displaying an image that provides useful sizing and
 preloading options not found on the standard `<img>` tag.
@@ -64,16 +70,6 @@ Custom property | Description | Default
 @element iron-image
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
-
-import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import {resolveUrl} from '@polymer/polymer/lib/utils/resolve-url.js';
 Polymer({
   _template: html`
     <style>
