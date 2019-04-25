@@ -355,7 +355,7 @@ Polymer({
     // NOTE: Use of `URL` was removed here because IE11 doesn't support
     // constructing it. If this ends up being problematic, we should
     // consider reverting and adding the URL polyfill as a dev dependency.
-    if (resolved[0] === '/') {
+    if (resolved.length >= 2 && resolved[0] === '/' && resolved[1] !== '/') {
       // In IE location.origin might not work
       // https://connect.microsoft.com/IE/feedback/details/1763802/location-origin-is-undefined-in-ie-11-on-windows-10-but-works-on-windows-7
       resolved = (location.origin || location.protocol + '//' + location.host) +
