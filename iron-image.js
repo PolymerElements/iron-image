@@ -66,11 +66,10 @@ Custom property | Description | Default
 `--iron-image-width` | Sets the width of the wrapped image | `auto`
 `--iron-image-height` | Sets the height of the wrapped image | `auto`
 
-@group Iron Elements
-@element iron-image
 @demo demo/index.html
 */
 Polymer({
+  /** @override */
   _template: html`
     <style>
       :host {
@@ -216,8 +215,6 @@ Polymer({
     /**
      * Can be used to set the height of image (e.g. via binding); size may also
      * be set via CSS.
-     *
-     * @attribute height
      * @type number
      * @default null
      */
@@ -229,6 +226,7 @@ Polymer({
     '_loadStateObserver(src, preventLoad)'
   ],
 
+  /** @override */
   created: function() {
     this._resolvedSrc = '';
   },
